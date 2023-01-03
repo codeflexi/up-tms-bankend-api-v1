@@ -80,7 +80,7 @@ exports.updateCompany = asyncHandler(async (req, res, next) => {
   }
 
 // Update comapny
-  company = await Company.findOneAndUpdate(req.params.id, req.body, {
+  company = await Company.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
     runValidators: true
   });

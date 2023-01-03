@@ -146,6 +146,7 @@ exports.createShipment = asyncHandler(async (req, res, next) => {
 // @access    Public
 exports.updateShipment = asyncHandler(async (req, res, next) => {
   let shipment = await Shipment.findById(req.params.id);
+  
 
   if (!shipment) {
     return next(
@@ -162,11 +163,18 @@ exports.updateShipment = asyncHandler(async (req, res, next) => {
   //   );
   // }
 
+  // req.body.status = 'SORTED'
+  
+
   // Update shipment
-  shipment = await Shipment.findOneAndUpdate(req.params.id, req.body, {
+  shipment = await Shipment.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
     runValidators: true
   });
+ console.log(req.body.status)
+console.log(req.params.id)
+console.log(shipment)
+
   res.status(200).json({ success: true, data: shipment });
 });
 

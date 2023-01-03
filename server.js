@@ -19,6 +19,7 @@ const warehouses = require('./routes/warehouses');
 const products = require('./routes/products');
 const orders = require('./routes/orders');
 const shipments = require('./routes/shipments');
+const shipmentRoutes = require('./routes/shipment-routes');
 const auth = require('./routes/auth');
 const cors = require('cors');
 const Warehouse = require('./models/Warehouse');
@@ -61,6 +62,7 @@ app.use('/api/v1/warehouses',warehouses);
 app.use('/api/v1/products',products);
 app.use('/api/v1/orders',orders);
 app.use('/api/v1/shipments',shipments);
+app.use('/api/v1/shipment-routes',shipmentRoutes);
 app.use('/api/v1/auth',auth);
 
 app.use(errorHandler);

@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const ShipmentRouteSchema = mongoose.Schema({
-    shipment_items: [{
+    shipment_ids: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Shipment'
     }
@@ -22,25 +22,12 @@ const ShipmentRouteSchema = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Branch',
     },
-    status: {
-        type: String,
-        required: true,
-        default: 'Pending',
-    },
     memo: {
         type: String
-    },
-
-    total_shipment: {
-        type: Number,
     },
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
-    },
-    warehouse: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Warehouse',
     },
     shiped_date: {
         type: Date,
@@ -72,7 +59,6 @@ ShipmentRouteSchema.set('toJSON', {
 //Static method to get avg of course tuitions
 ShipmentRouteSchema.statics.getTrackingNumber = async function (shipmentId) {
     console.log('Calculating tracking number...'.blue);
-
 
     try {
         // access Bootcamp model

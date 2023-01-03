@@ -80,7 +80,7 @@ exports.updateWarehouse = asyncHandler(async (req, res, next) => {
   }
 
 // Update comapny
-  warehouse = await Warehouse.findOneAndUpdate(req.params.id, req.body, {
+  warehouse = await Warehouse.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
     runValidators: true
   });
