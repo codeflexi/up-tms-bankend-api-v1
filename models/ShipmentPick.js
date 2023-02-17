@@ -1,33 +1,20 @@
 const mongoose = require('mongoose');
 
-const ShipmentRouteSchema = mongoose.Schema({
+const ShipmentPickSchema = mongoose.Schema({
     shipment_ids: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Shipment'
     }
 ],
-    route_number: {
+    pick_number: {
         type: String,
-        required: [true, 'Please add a route number'],
-        unique: [true, 'Route number has to be unique'],
+        required: [true, 'Please add a pick number'],
+        unique: [true, 'Pick number has to be unique'],
         trim: true,
         sparse: true,
-        maxlength: [100, 'Route number can not be more than 100 characters']
+        maxlength: [100, 'Pick number can not be more than 100 characters']
     },
-    from_source: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Branch',
-        required: [true, 'Please add a route from'],
-    },
-    to_destination: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Branch',
-        required: [true, 'Please add a route to'],
-    },
-    memo: {
-        type: String
-    },
-    user: {
+    driver: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
     },
@@ -35,7 +22,32 @@ const ShipmentRouteSchema = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Vehicle',
     },
-    shiped_date: {
+    memo: {
+        type: String
+    },
+    company: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Company',
+    },
+    warehouse: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Warehouse',
+    },
+    status: {
+        type: String,
+        required: true,
+        enum: [
+            'CREATED',
+            'COMPLETED',
+            'CANCELLED'
+        ],
+        default: 'CREATED',
+    },
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+    },
+    planned_date: {
         type: Date,
         default: Date.now,
     },
@@ -53,29 +65,15 @@ const ShipmentRouteSchema = mongoose.Schema({
     }
 })
 
-ShipmentRouteSchema.virtual('id').get(function () {
+ShipmentPickSchema.virtual('id').get(function () {
     return this._id.toHexString();
 });
 
-ShipmentRouteSchema.set('toJSON', {
+ShipmentPickSchema.set('toJSON', {
     virtuals: true,
 });
 
 
-//Static method to get avg of course tuitions
-ShipmentRouteSchema.statics.getTrackingNumber = async function (shipmentId) {
-    console.log('Calculating tracking number...'.blue);
-
-    try {
-        // access Bootcamp model
-        await this.model('Shipment').findByIdAndUpdate(shipmentId, {
-            tracking_number: string.concat('TH', '$shipment_number')
-        })
-
-    } catch (err) {
-        console.error(err);
-    }
-}
 
 // //Call get AverageCost after save
 // ShipmentSchema.post('save', function () {
@@ -83,7 +81,7 @@ ShipmentRouteSchema.statics.getTrackingNumber = async function (shipmentId) {
 // this.constructor.getTrackingNumber(this.shipmentId);
 // });
 
-module.exports = mongoose.model('ShipmentRoute', ShipmentRouteSchema);
+module.exports = mongoose.model('ShipmentPick', ShipmentPickSchema);
 
 
 

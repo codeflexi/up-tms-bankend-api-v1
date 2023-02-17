@@ -1,28 +1,33 @@
 const mongoose = require('mongoose');
 
-const ShipmentRouteSchema = mongoose.Schema({
+const ShipmentSortSchema = mongoose.Schema({
+    route: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Route',
+      },
     shipment_ids: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Shipment'
     }
 ],
-    route_number: {
+    sort_number: {
         type: String,
-        required: [true, 'Please add a route number'],
-        unique: [true, 'Route number has to be unique'],
+        required: [true, 'Please add a sort number'],
+        unique: [true, 'Sort number has to be unique'],
         trim: true,
         sparse: true,
-        maxlength: [100, 'Route number can not be more than 100 characters']
+        maxlength: [100, 'Sort number can not be more than 100 characters']
     },
-    from_source: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Branch',
-        required: [true, 'Please add a route from'],
-    },
-    to_destination: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Branch',
-        required: [true, 'Please add a route to'],
+    status: {
+        type: String,
+        required: true,
+        enum: [
+            'CREATED',
+            'DELIVERING',
+            'OUT FOR DELIVERY',
+            'CANCELLED'
+        ],
+        default: 'CREATED',
     },
     memo: {
         type: String
@@ -31,11 +36,7 @@ const ShipmentRouteSchema = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
     },
-    vehicle: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Vehicle',
-    },
-    shiped_date: {
+    sorted_date: {
         type: Date,
         default: Date.now,
     },
@@ -53,17 +54,17 @@ const ShipmentRouteSchema = mongoose.Schema({
     }
 })
 
-ShipmentRouteSchema.virtual('id').get(function () {
+ShipmentSortSchema.virtual('id').get(function () {
     return this._id.toHexString();
 });
 
-ShipmentRouteSchema.set('toJSON', {
+ShipmentSortSchema.set('toJSON', {
     virtuals: true,
 });
 
 
 //Static method to get avg of course tuitions
-ShipmentRouteSchema.statics.getTrackingNumber = async function (shipmentId) {
+ShipmentSortSchema.statics.getTrackingNumber = async function (shipmentId) {
     console.log('Calculating tracking number...'.blue);
 
     try {
@@ -83,7 +84,7 @@ ShipmentRouteSchema.statics.getTrackingNumber = async function (shipmentId) {
 // this.constructor.getTrackingNumber(this.shipmentId);
 // });
 
-module.exports = mongoose.model('ShipmentRoute', ShipmentRouteSchema);
+module.exports = mongoose.model('ShipmentSort', ShipmentSortSchema);
 
 
 

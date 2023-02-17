@@ -1,6 +1,7 @@
 const asyncHandler = require('../middleware/async');
 const ErrorResponse = require('../utils/errorResponse');
 const Shipment = require('../models/Shipment');
+const ShipmentLog = require('../models/ShipmentLog');
 const ShipmentItem = require('../models/ShipmentItem');
 
 // @desc      Get all Shipment
@@ -26,27 +27,32 @@ exports.getShipment = asyncHandler(async (req, res, next) => {
         populate: { path: 'product', select: 'code name price' }
       })
      
-
-
-
   if (!shipment) {
     return next(
       new ErrorResponse(`Shipment not fond with id of ${req.params.id}`, 404));
   }
 
-  // Depending on timezone, your results will vary
-  const event = new Date("2022-12-10T14:45:09.126Z");
-
-  console.log(event.toLocaleTimeString('en-TH').toString);
-  console.log(event.toLocaleDateString('en-TH').toString);
-
-  shipment.updated_date = event.toLocaleDateString('en-TH');
-
   res
     .status(200)
     .json({ success: true, data: shipment });
 
+});
 
+exports.getShipmentLogs = asyncHandler(async (req, res, next) => {
+
+  const shipmentlog = await ShipmentLog.find({shipment_id : req.params.id })
+    .populate('user', 'name')
+    .populate('shipment_id')
+  
+     
+  if (!shipmentlog) {
+    return next(
+      new ErrorResponse(`Shipment not fond with id of ${req.params.id}`, 404));
+  }
+
+  res
+    .status(200)
+    .json({ success: true, data: shipmentlog });
 });
 
 // @desc    Create new shipments
@@ -76,11 +82,7 @@ exports.createShipment = asyncHandler(async (req, res, next) => {
   }))
 
  const randomInit = `TH${Date.now()}${(Math.round(Math.random() * 1000))}`
-
-
-  
-
-  const totalPrice = totalPrices.reduce((a, b) => a + b, 0);
+ const totalPrice = totalPrices.reduce((a, b) => a + b, 0);
 
   // Add user to req.body
   req.body.user = req.user.id;
@@ -140,40 +142,44 @@ exports.createShipment = asyncHandler(async (req, res, next) => {
 });
 
 
+exports.createShipmentLog = asyncHandler(async (req, res, next) => {
+
+ const randomInit = `LO${Date.now()}${(Math.round(Math.random() * 1000))}`
+
+
+  // Add user to req.body
+  req.body.user = req.user.id;
+  req.body.log_number = randomInit;
+
+  //const shipment = await shipment.create(req.body);
+  // shipment = await shipment.save();
+  // Create Course for that bootcamp
+  const shipmentlog = await ShipmentLog.create(req.body);
+  res.status(201).json({
+    success: true,
+    data: shipmentlog
+  });
+});
+
 
 // @desc      Update shipment
 // @route     PUT /api/v1/shipments/:id
 // @access    Public
 exports.updateShipment = asyncHandler(async (req, res, next) => {
   let shipment = await Shipment.findById(req.params.id);
-  
 
   if (!shipment) {
     return next(
       new ErrorResponse(`Shipment not found with id of ${req.params.id}`, 404)
     );
   }
-
-  // // Make sure user is shipment owner
-  // if (shipment.user.toString() !== req.user.id) {
-  //   return next(
-  //     new ErrorResponse(
-  //       `User ${req.params.id} is not authorized to update this shipment`, 401
-  //     )
-  //   );
-  // }
-
-  // req.body.status = 'SORTED'
   
-
   // Update shipment
   shipment = await Shipment.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
     runValidators: true
   });
- console.log(req.body.status)
-console.log(req.params.id)
-console.log(shipment)
+ 
 
   res.status(200).json({ success: true, data: shipment });
 });
@@ -202,7 +208,7 @@ exports.deleteShipment = asyncHandler(async (req, res, next) => {
    // delete order items
    await shipment.shipment_items.map(async shipmentitem => {
     await ShipmentItem.findByIdAndRemove(shipmentitem)
-    console.log()
+    
   })
     await shipment.remove();
 

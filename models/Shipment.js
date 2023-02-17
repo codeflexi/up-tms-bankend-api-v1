@@ -59,11 +59,14 @@ const ShipmentSchema = mongoose.Schema({
         required: true,
         enum: [
             'DATA SUBMITTED',
-            'DATA RECEIVED',
+            'PICKING UP',
             'PICKED UP',
-            'ARRIVALED DC',
+            'ARRIVED HUB',
             'SORTED',
-            'Pending'
+            'TRANSIT',
+            'ARRIVED DC',
+            'OUT FOR DELIVERY',
+            'DELIVERED'
         ],
         default: 'DATA SUBMITTED',
     },
@@ -136,6 +139,7 @@ const ShipmentSchema = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Warehouse',
     },
+    
     date_shiped: {
         type: Date,
         default: Date.now,

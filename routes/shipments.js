@@ -2,8 +2,10 @@ const express = require('express');
 
 const { getShipments, 
     getShipment, 
+    getShipmentLogs,
     updateShipment, 
     createShipment, 
+    createShipmentLog,
     deleteShipment } = require('../controllers/shipments');
 
 const Shipment = require('../models/Shipment');
@@ -53,10 +55,20 @@ router
 .post(protect ,authorize('publisher','admin'), createShipment);
 
 router
+.route('/logs')
+.post(protect ,authorize('publisher','admin'), createShipmentLog);
+
+router
 .route('/:id')
 .get(
     getShipment)
 .put(protect,authorize('publisher','admin'),updateShipment)
 .delete(protect,authorize('publisher','admin'),deleteShipment);
+
+router
+.route('/logs/:id')
+.get(
+    getShipmentLogs)
+
 
 module.exports = router;

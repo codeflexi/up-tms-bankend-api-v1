@@ -1,49 +1,43 @@
 const mongoose = require('mongoose');
 
-const ShipmentRouteSchema = mongoose.Schema({
-    shipment_ids: [{
+const ShipmentLogSchema = mongoose.Schema({
+    shipment_id: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Shipment'
-    }
-],
-    route_number: {
+        ref: 'Shipment',
+    },
+    log_number: {
         type: String,
-        required: [true, 'Please add a route number'],
-        unique: [true, 'Route number has to be unique'],
+        required: [true, 'Please add a Log number'],
+        unique: [true, 'Log number has to be unique'],
         trim: true,
         sparse: true,
-        maxlength: [100, 'Route number can not be more than 100 characters']
+        maxlength: [100, 'Log number can not be more than 100 characters']
     },
-    from_source: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Branch',
-        required: [true, 'Please add a route from'],
-    },
-    to_destination: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Branch',
-        required: [true, 'Please add a route to'],
-    },
-    memo: {
+    waybill_number: {
         type: String
+    },
+    shipment_number: {
+        type: String
+    },
+    event: {
+        type: String,
+        required: true,
+        enum: [
+            'DATA SUBMITTED',
+            'DATA RECEIVED',
+            'PICKING UP',
+            'PICKED UP',
+            'ARRIVALED DC',
+            'SORTED',
+            'ARRIVALED HUB',
+            'SHIPPED'
+        ]
     },
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
     },
-    vehicle: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Vehicle',
-    },
-    shiped_date: {
-        type: Date,
-        default: Date.now,
-    },
-    created_date: {
-        type: Date,
-        default: Date.now,
-    },
-    updated_date: {
+    logged_date: {
         type: Date,
         default: Date.now,
     },
@@ -53,18 +47,18 @@ const ShipmentRouteSchema = mongoose.Schema({
     }
 })
 
-ShipmentRouteSchema.virtual('id').get(function () {
+ShipmentLogSchema.virtual('id').get(function () {
     return this._id.toHexString();
 });
 
-ShipmentRouteSchema.set('toJSON', {
+ShipmentLogSchema.set('toJSON', {
     virtuals: true,
 });
 
-
 //Static method to get avg of course tuitions
-ShipmentRouteSchema.statics.getTrackingNumber = async function (shipmentId) {
+ShipmentLogSchema.statics.getTrackingNumber = async function (shipmentId) {
     console.log('Calculating tracking number...'.blue);
+
 
     try {
         // access Bootcamp model
@@ -78,12 +72,12 @@ ShipmentRouteSchema.statics.getTrackingNumber = async function (shipmentId) {
 }
 
 // //Call get AverageCost after save
-// ShipmentSchema.post('save', function () {
+// ShipmentLogSchema.post('save', function () {
 //     // run static model use this
 // this.constructor.getTrackingNumber(this.shipmentId);
 // });
 
-module.exports = mongoose.model('ShipmentRoute', ShipmentRouteSchema);
+module.exports = mongoose.model('ShipmentLog', ShipmentLogSchema);
 
 
 

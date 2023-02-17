@@ -1,12 +1,12 @@
 const express = require('express');
 
-const { getShipmentRoutes, 
-    getShipmentRoute, 
-    updateShipmentRoute, 
-    createShipmentRoute, 
-    deleteShipmentRoute } = require('../controllers/shipmentroutes');
+const { getShipmentSorts, 
+    getShipmentSort, 
+    updateShipmentSort, 
+    createShipmentSort, 
+    deleteShipmentSort } = require('../controllers/shipmentsorts');
 
-const ShipmentRoute = require('../models/ShipmentRoute');
+const ShipmentSort = require('../models/ShipmentSort');
 const Shipment = require('../models/Shipment');
 
 const advancedResults = require('../middleware/advancedResults');
@@ -28,30 +28,29 @@ const { protect , authorize} = require('../middleware/auth');
 router
 .route('/')
 .get(
-    advancedResults(ShipmentRoute,
+    advancedResults(ShipmentSort,
         [ {
       path: 'user',
       select: 'name'
     },
     {
         path: 'shipment_ids'
-      },
-      {path:'from_source'},
-      {path:'to_destination'},
-      {path:'vehicle'}
+      }
+      ,
+      {path:'route'},
 ]
     ),
-    getShipmentRoutes
+    getShipmentSorts
   )
  
 
-.post(protect ,authorize('publisher','admin'), createShipmentRoute);
+.post(protect ,authorize('publisher','admin'), createShipmentSort);
 
 router
 .route('/:id')
 .get(
-    getShipmentRoute)
-.put(protect,authorize('publisher','admin'),updateShipmentRoute)
-.delete(protect,authorize('publisher','admin'),deleteShipmentRoute);
+    getShipmentSort)
+.put(protect,authorize('publisher','admin'),updateShipmentSort)
+.delete(protect,authorize('publisher','admin'),deleteShipmentSort);
 
 module.exports = router;

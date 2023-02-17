@@ -46,7 +46,9 @@ const randomInit = `RO${Date.now()}${(Math.round(Math.random() * 10))}`
 
   // Add user to req.body
   req.body.user = req.user.id;
+  if(req.body.route_number !=""){
   req.body.route_number = randomInit;
+}
   //req.body.shipment_items = shipmentItemIds;
 
   //const shipment = await shipment.create(req.body);

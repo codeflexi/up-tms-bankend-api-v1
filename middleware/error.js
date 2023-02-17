@@ -1,4 +1,5 @@
 const ErrorResponse = require('../utils/errorResponse');
+const winston = require('winston');
 
 const errorHandler = (err, req, res, next) => {
   let error = { ...err };
@@ -8,6 +9,9 @@ const errorHandler = (err, req, res, next) => {
   // Log to console for dev
   console.log(err);
   console.log(err.name);
+
+// Log to winton
+  //winston.error(err.message, err);
 
   // Mongoose bad ObjectId
   if (err.name === 'CastError') {

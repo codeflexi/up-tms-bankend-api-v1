@@ -19,7 +19,6 @@ const companies = require('./routes/companies');
 const branches = require('./routes/branches');
 const warehouses = require('./routes/warehouses');
 const products = require('./routes/products');
-const vehicles = require('./routes/vehicles');
 const routes = require('./routes/route-masters');
 const orders = require('./routes/orders');
 const shipments = require('./routes/shipments');
@@ -63,62 +62,62 @@ app.use(cookieParser());
 
 // Dev logging middleware
 if(process.env.NODE_ENV === 'development') {
-  app.use(morgan('dev'));
+  //app.use(morgan('dev'));
 
-// var accessLogStream = fs.createWriteStream(`${__dirname}/_logfile/access.log`, { flags: 'a' })
-// var errorLogStream = fs.createWriteStream(`${__dirname}/_logfile/error.log`, { flags: 'a' })
+var accessLogStream = fs.createWriteStream(`${__dirname}/_logfile/access.log`, { flags: 'a' })
+var errorLogStream = fs.createWriteStream(`${__dirname}/_logfile/error.log`, { flags: 'a' })
 
-//   // เขียน Log ลงไฟล์ access.log
-//   morgan.token('type',function(req,res) {
-//     return req.headers['content-type']
-//     })
+  // เขียน Log ลงไฟล์ access.log
+  morgan.token('type',function(req,res) {
+    return req.headers['content-type']
+    })
 
-//     morgan.token('error',function(req,res) {
-//         return  res.error
-//         })
+    morgan.token('error',function(req,res) {
+        return  res.error
+        })
     
 
-// //morgan.token('error', (req, res) => `${req.error.message} - ${req.error.stack}`);
+//morgan.token('error', (req, res) => `${req.error.message} - ${req.error.stack}`);
 
-// const getCustomErrorMorganFormat = () => JSON.stringify({
-//   timestamp: ':date[iso]', 
-//   method: ':method',
-//     url: ':url',
-//     http_version: ':http-version',
-//     response_time: ':response-time ms',
-//     status: ':status',
-//     content_length: ':res[content-length]',
+const getCustomErrorMorganFormat = () => JSON.stringify({
+  timestamp: ':date[iso]', 
+  method: ':method',
+    url: ':url',
+    http_version: ':http-version',
+    response_time: ':response-time ms',
+    status: ':status',
+    content_length: ':res[content-length]',
     
-//     headers_count: 'req-headers-length',
-//     error: ':error',
-// });
+    headers_count: 'req-headers-length',
+    error: ':error',
+});
 
-// const getCustomLogMorganFormat = () => JSON.stringify({
-//   timestamp: ':date[iso]',
-//   method: ':method',
-//   url: ':url',
-//   http_version: ':http-version',
-//   response_time: ':response-time ms',
-//   status: ':status',
-//   content_length: ':res[content-length]',
-//   headers_count: 'req-headers-length',
-//   type: ':type',
-// });
+const getCustomLogMorganFormat = () => JSON.stringify({
+  timestamp: ':date[iso]',
+  method: ':method',
+  url: ':url',
+  http_version: ':http-version',
+  response_time: ':response-time ms',
+  status: ':status',
+  content_length: ':res[content-length]',
+  headers_count: 'req-headers-length',
+  type: ':type',
+});
 
-// app.use(morgan(getCustomErrorMorganFormat(), {
-//     skip: (req, res) => (res.statusCode < 400),
-//     stream: errorLogStream,
+app.use(morgan(getCustomErrorMorganFormat(), {
+    skip: (req, res) => (res.statusCode < 400),
+    stream: errorLogStream,
+}));
+
+// app.use(morgan('combined', {
+// 	stream: accessLogStream,
 // }));
-
-// // app.use(morgan('combined', {
-// // 	stream: accessLogStream,
-// // }));
  
   
 
-// // นำไปใช้โดยกำหนดผ่าน option: stream
-// // app.use(morgan('combined', { stream: accessLogStream }))
-// app.use(morgan(getCustomLogMorganFormat(), { stream: accessLogStream }))
+// นำไปใช้โดยกำหนดผ่าน option: stream
+// app.use(morgan('combined', { stream: accessLogStream }))
+app.use(morgan(getCustomLogMorganFormat(), { stream: accessLogStream }))
 
 }
 
@@ -138,7 +137,6 @@ app.use('/api/v1/companies',companies);
 app.use('/api/v1/branches',branches);
 app.use('/api/v1/warehouses',warehouses);
 app.use('/api/v1/products',products);
-app.use('/api/v1/vehicles',vehicles);
 app.use('/api/v1/orders',orders);
 app.use('/api/v1/shipments',shipments);
 app.use('/api/v1/shipment-routes',shipmentRoutes);
