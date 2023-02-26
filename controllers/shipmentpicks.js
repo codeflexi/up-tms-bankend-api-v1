@@ -1,13 +1,14 @@
 const asyncHandler = require('../middleware/async');
 const ErrorResponse = require('../utils/errorResponse');
 const Shipment = require('../models/Shipment');
+const Vehicle = require('../models/Vehicle');
 
-const ShipmentSort = require('../models/ShipmentSort');
+const ShipmentPick = require('../models/ShipmentPick');
 
 // @desc      Get all Shipment
 // @route     GET /api/v1/Shipments
 // @access    Private/Admin
-exports.getShipmentSorts = asyncHandler(async (req, res, next) => {
+exports.getShipmentPicks = asyncHandler(async (req, res, next) => {
   res.status(200).json(res.advancedResults);
 });
 
@@ -15,24 +16,25 @@ exports.getShipmentSorts = asyncHandler(async (req, res, next) => {
 // @desc    Get single Shipments
 // @route   GET /api/v1/Shipments/:id
 // @access  Public
-exports.getShipmentSort = asyncHandler(async (req, res, next) => {
+exports.getShipmentPick = asyncHandler(async (req, res, next) => {
 
-  const shipmentsort = await ShipmentSort.findById(req.params.id)
+  const shipmentpick = await ShipmentPick.findById(req.params.id)
     .populate('user', 'name')
     .populate('shipment_ids')
-    .populate('route')
-  // .populate('from_source')
-  // .populate('to_destination')
-
-
-  if (!shipmentsort) {
+    .populate('company')
+    .populate('warehouse')
+    .populate('driver')
+    .populate('vehicle')
+   
+  
+  if (!shipmentpick) {
     return next(
       new ErrorResponse(`Shipment not fond with id of ${req.params.id}`, 404));
   }
 
   res
     .status(200)
-    .json({ success: true, data: shipmentsort });
+    .json({ success: true, data: shipmentpick });
 
 });
 
@@ -40,15 +42,20 @@ exports.getShipmentSort = asyncHandler(async (req, res, next) => {
 // @route   POST /api/v1/shipments
 // @access  Private
 
-exports.createShipmentSort = asyncHandler(async (req, res, next) => {
+exports.createShipmentPick = asyncHandler(async (req, res, next) => {
 
-  const randomInit = `ST${Date.now()}${(Math.round(Math.random() * 10))}`
+  const randomInit = `PK${Date.now()}${(Math.round(Math.random() * 10))}`
 
   // Add user to req.body
   req.body.user = req.user.id;
-  if (req.body.sort_number != "") {
-    req.body.sort_number = randomInit;
+  if (req.body.pick_number != "") {
+    req.body.pick_number = randomInit;
   }
+
+  
+  const vehicle = await Vehicle.findById(req.body.vehicle);
+  req.body.driver = vehicle.driver
+  console.log(req.body.driver)
 
   // Start Update Shipment Status
   //  Save shipment items
@@ -72,7 +79,7 @@ exports.createShipmentSort = asyncHandler(async (req, res, next) => {
     }
 
     const update = {
-      status: 'SORTED' 
+      status: 'PICKING UP' 
     }
 
       await Shipment.findByIdAndUpdate(shipmentItemId,update, {
@@ -84,33 +91,32 @@ exports.createShipmentSort = asyncHandler(async (req, res, next) => {
 
 
    // Update shipment
-   const shipmentsort = await ShipmentSort.create(req.body);
+   const shipmentpick = await ShipmentPick.create(req.body);
 
   // End Update Shipment Status
 
   res.status(201).json({
     success: true,
-    data: shipmentsort
+    data: shipmentpick
   });
 
 });
 
 
-
 // @desc      Update shipment
 // @route     PUT /api/v1/shipments/:id
 // @access    Public
-exports.updateShipmentSort = asyncHandler(async (req, res, next) => {
-  const shipmentsort = await ShipmentSort.findById(req.params.id);
+exports.updateShipmentPick  = asyncHandler(async (req, res, next) => {
+  const shipmentpick = await ShipmentPick.findById(req.params.id);
 
-  if (!shipmentsort) {
+  if (!shipmentpick) {
     return next(
-      new ErrorResponse(`Shipment sort not found with id of ${req.params.id}`, 404)
+      new ErrorResponse(`Shipment not found with id of ${req.params.id}`, 404)
     );
   }
 
   // Update shipment
-  shipmentsort = await ShipmentSort.findByIdAndUpdate(req.params.id, req.body, {
+  const shipmentpickupdate = await ShipmentPick.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
     runValidators: true
   });
@@ -121,22 +127,22 @@ exports.updateShipmentSort = asyncHandler(async (req, res, next) => {
   // }
 
 
-  res.status(200).json({ success: true, data: shipmentsort });
+  res.status(200).json({ success: true, data: shipmentpickupdate });
 });
 
 // @desc      Delete shipment
 // @route     DELETE /api/v1/shipments/:id
 // @access    Private
-exports.deleteShipmentSort = asyncHandler(async (req, res, next) => {
-  const shipmentsort = await ShipmentSort.findById(req.params.id);
+exports.deleteShipmentPick= asyncHandler(async (req, res, next) => {
+  const shipmentpick = await ShipmentPick.findById(req.params.id);
 
-  if (!shipmentsort) {
+  if (!shipmentpick) {
     return next(
       new ErrorResponse(`Shipment not found with id of ${req.params.id}`, 404)
     );
   }
 
 
-  await shipmentsort.remove();
+  await shipmentpick.remove();
   res.status(200).json({ success: true, data: {} });
 });

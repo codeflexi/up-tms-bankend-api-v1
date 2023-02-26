@@ -24,7 +24,10 @@ const routes = require('./routes/route-masters');
 const orders = require('./routes/orders');
 const shipments = require('./routes/shipments');
 const shipmentRoutes = require('./routes/shipment-routes');
+const shipmentPicks = require('./routes/shipment-picks');
 const shipmentSorts = require('./routes/shipment-sorts');
+const shipmentLogs = require('./routes/shipment-logs');
+
 const auth = require('./routes/auth');
 const cors = require('cors');
 // const Warehouse = require('./models/Warehouse');
@@ -142,7 +145,9 @@ app.use('/api/v1/vehicles',vehicles);
 app.use('/api/v1/orders',orders);
 app.use('/api/v1/shipments',shipments);
 app.use('/api/v1/shipment-routes',shipmentRoutes);
+app.use('/api/v1/shipment-picks',shipmentPicks);
 app.use('/api/v1/shipment-sorts',shipmentSorts);
+app.use('/api/v1/shipment-logs',shipmentLogs);
 app.use('/api/v1/route-masters',routes);
 app.use('/api/v1/auth',auth);
 

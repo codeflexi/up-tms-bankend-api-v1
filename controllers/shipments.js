@@ -38,6 +38,38 @@ exports.getShipment = asyncHandler(async (req, res, next) => {
 
 });
 
+// @desc    Get  Shipments by Ids
+// @route   GET /api/v1/Shipments/:id
+// @access  Public
+exports.getShipmentByIds = asyncHandler(async (req, res, next) => {
+
+  var ids = req.params.id.split(',');
+
+  const shipment = await Shipment.find({_id: { $in: ids}})
+  .select('waybill_number company warehouse')
+
+  // const shipment = await Shipment.findById(req.params.id)
+  //   .populate('user', 'name')
+  //   .populate('company')
+  //   .populate('warehouse')
+  //   .populate(
+  //     {
+  //       path: 'shipment_items',
+  //       populate: { path: 'product', select: 'code name price' }
+  //     })
+     
+  if (!shipment) {
+    return next(
+      new ErrorResponse(`Shipment not fond with id of ${req.params.id}`, 404));
+  }
+  
+  res
+    .status(200)
+    .json({ success: true, data: shipment });
+
+});
+
+
 exports.getShipmentLogs = asyncHandler(async (req, res, next) => {
 
   const shipmentlog = await ShipmentLog.find({shipment_id : req.params.id })
@@ -91,24 +123,6 @@ exports.createShipment = asyncHandler(async (req, res, next) => {
   req.body.waybill_number = randomInit;
   //req.body.shipment_items = shipmentItemIds;
 
-  // let shipment = new shipment({
-  //   shipment_items: shipmentItemsIdsResolved,
-  //   shipment_number: req.body.shipment_number,
-  //   shipping_address_line1: req.body.shipping_address_line1,
-  //   shipping_address_line2: req.body.shipping_address_line2,
-  //   city: req.body.city,
-  //   state: req.body.state,
-  //   zipcode: req.body.zipcode,
-  //   country: req.body.country,
-  //   phone: req.body.phone,
-  //   phone_alt: req.body.phone_alt,
-  //   channel: req.body.channel,
-  //   //status: req.body.status,
-  //   total_price: totalPrice,
-  //   user: req.body.user,
-  //   company: req.body.company
-  // })
-  // shipment = await shipment.save();
 
   //if(!shipment)
   //return res.status(400).send('the shipment cannot be created!')
@@ -129,22 +143,39 @@ exports.createShipment = asyncHandler(async (req, res, next) => {
   }
 
 
-  //const shipment = await shipment.create(req.body);
-  // shipment = await shipment.save();
-  // Create Course for that bootcamp
-  const shipment = await Shipment.create(req.body);
+ // Create New Shipment
+const shipment = await Shipment.create(req.body);
 
+//Create Log of New Shipments
+const randomLogInt = `LG${Date.now()}${(Math.round(Math.random() * 1000))}`
+const shipmentlog = {
+  user:req.user.id,
+  log_number:randomLogInt,
+  waybill_number:randomInit,
+  shipment_number:req.body.shipment_number,
+  event:"DATA SUBMITTED",
+  shipment_id:shipment._id,
+  ref_number:randomInit
+}
+  const shipmentlogadd = await ShipmentLog.create(shipmentlog);
+  console.log(shipmentlogadd)
+  
+  
   res.status(201).json({
     success: true,
     data: shipment
   });
+
+ 
+//await Character.create([{ name: 'Will Riker' }, { name: 'Geordi LaForge' }]);
+  
 
 });
 
 
 exports.createShipmentLog = asyncHandler(async (req, res, next) => {
 
- const randomInit = `LO${Date.now()}${(Math.round(Math.random() * 1000))}`
+ const randomInit = `LG${Date.now()}${(Math.round(Math.random() * 1000))}`
 
 
   // Add user to req.body

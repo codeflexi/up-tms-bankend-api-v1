@@ -19,18 +19,22 @@ const ShipmentLogSchema = mongoose.Schema({
     shipment_number: {
         type: String
     },
+     ref_number: {
+        type: String
+    },
     event: {
         type: String,
         required: true,
         enum: [
             'DATA SUBMITTED',
-            'DATA RECEIVED',
             'PICKING UP',
             'PICKED UP',
-            'ARRIVALED DC',
+            'ARRIVED HUB',
             'SORTED',
-            'ARRIVALED HUB',
-            'SHIPPED'
+            'TRANSIT',
+            'ARRIVED DC',
+            'OUT FOR DELIVERY',
+            'DELIVERED'
         ]
     },
     user: {

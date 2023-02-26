@@ -3,7 +3,9 @@ const mongoose = require('mongoose');
 const ShipmentRouteSchema = mongoose.Schema({
     shipment_ids: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Shipment'
+        ref: 'ShipmentSort'
+    //ShipmentSort
+    
     }
 ],
     route_number: {
