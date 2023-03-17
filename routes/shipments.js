@@ -5,6 +5,7 @@ const { getShipments,
   getShipmentLogs,
   updateShipment,
   createShipment,
+  uploadShipment,
   createShipmentLog,
   deleteShipment,
   getShipmentByIds
@@ -72,5 +73,9 @@ router
   .get(
     getShipmentLogs)
 
-
+    router
+    .route('/upload')
+    .post(protect, authorize('publisher', 'admin'),   uploadShipment,
+    );
+    
 module.exports = router;

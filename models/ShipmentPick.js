@@ -59,6 +59,10 @@ const ShipmentPickSchema = mongoose.Schema({
         type: Date,
         default: Date.now,
     },
+    picked_date: {
+        type: Date,
+        default: Date.now,
+    },
     createdAt: {
         type: Date,
         default: Date.now,

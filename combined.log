@@ -1,0 +1,72 @@
+{"level":"error","message":"Resource not found Resource not found","service":"user-service","stack":"Error: Resource not found\n    at errorHandler (/Users/nattapongm/Documents/learn/devcamper_api/middleware/error.js:18:13)\n    at newFn (/Users/nattapongm/Documents/learn/devcamper_api/node_modules/express-async-errors/index.js:16:20)\n    at Layer.handle_error (/Users/nattapongm/Documents/learn/devcamper_api/node_modules/express/lib/router/layer.js:71:5)\n    at trim_prefix (/Users/nattapongm/Documents/learn/devcamper_api/node_modules/express/lib/router/index.js:326:13)\n    at /Users/nattapongm/Documents/learn/devcamper_api/node_modules/express/lib/router/index.js:286:9\n    at Function.process_params (/Users/nattapongm/Documents/learn/devcamper_api/node_modules/express/lib/router/index.js:346:12)\n    at Immediate.next (/Users/nattapongm/Documents/learn/devcamper_api/node_modules/express/lib/router/index.js:280:10)\n    at Immediate._onImmediate (/Users/nattapongm/Documents/learn/devcamper_api/node_modules/express/lib/router/index.js:646:15)\n    at process.processImmediate (node:internal/timers:473:21)","statusCode":404}
+{"level":"error","message":"Resource not found Resource not found","service":"user-service","stack":"Error: Resource not found\n    at errorHandler (/Users/nattapongm/Documents/learn/devcamper_api/middleware/error.js:18:13)\n    at newFn (/Users/nattapongm/Documents/learn/devcamper_api/node_modules/express-async-errors/index.js:16:20)\n    at Layer.handle_error (/Users/nattapongm/Documents/learn/devcamper_api/node_modules/express/lib/router/layer.js:71:5)\n    at trim_prefix (/Users/nattapongm/Documents/learn/devcamper_api/node_modules/express/lib/router/index.js:326:13)\n    at /Users/nattapongm/Documents/learn/devcamper_api/node_modules/express/lib/router/index.js:286:9\n    at Function.process_params (/Users/nattapongm/Documents/learn/devcamper_api/node_modules/express/lib/router/index.js:346:12)\n    at Immediate.next (/Users/nattapongm/Documents/learn/devcamper_api/node_modules/express/lib/router/index.js:280:10)\n    at Immediate._onImmediate (/Users/nattapongm/Documents/learn/devcamper_api/node_modules/express/lib/router/index.js:646:15)\n    at process.processImmediate (node:internal/timers:473:21)","statusCode":404}
+{"level":"error","message":"Resource not found Resource not found","service":"user-service","stack":"Error: Resource not found\n    at errorHandler (/Users/nattapongm/Documents/learn/devcamper_api/middleware/error.js:18:13)\n    at newFn (/Users/nattapongm/Documents/learn/devcamper_api/node_modules/express-async-errors/index.js:16:20)\n    at Layer.handle_error (/Users/nattapongm/Documents/learn/devcamper_api/node_modules/express/lib/router/layer.js:71:5)\n    at trim_prefix (/Users/nattapongm/Documents/learn/devcamper_api/node_modules/express/lib/router/index.js:326:13)\n    at /Users/nattapongm/Documents/learn/devcamper_api/node_modules/express/lib/router/index.js:286:9\n    at Function.process_params (/Users/nattapongm/Documents/learn/devcamper_api/node_modules/express/lib/router/index.js:346:12)\n    at Immediate.next (/Users/nattapongm/Documents/learn/devcamper_api/node_modules/express/lib/router/index.js:280:10)\n    at Immediate._onImmediate (/Users/nattapongm/Documents/learn/devcamper_api/node_modules/express/lib/router/index.js:646:15)\n    at process.processImmediate (node:internal/timers:473:21)","statusCode":404}
+{"level":"error","message":"Resource not found","service":"user-service"}
+{"level":"error","message":"Resource not found","service":"user-service"}
+{"level":"error","message":"PUT undefined://localhost:5000/api/v1/branches/639ed2a238b2958274cde6b23Resource not found","service":"user-service"}
+{"level":"error","message":"Resource not found PUT undefined://localhost:5000/api/v1/branches/639ed2a238b2958274cde6b23","service":"user-service"}
+{"level":"error","message":"Resource not found PUT undefined://localhost:5000/api/v1/branches/639ed2a238b2958274cde6b23","service":"user-service"}
+{
+  level: 'error',
+  message: 'Resource not found PUT undefined://localhost:5000/api/v1/branches/639ed2a238b2958274cde6b23',
+  service: 'user-service',
+  label: 'CATEGORY',
+  timestamp: 'Mar-17-2023 22:11:20'
+}
+{
+  level: 'error',
+  message: 'Resource not found PUT undefined://localhost:5000/api/v1/branches/639ed2a238b2958274cde6b23',
+  service: 'user-service',
+  label: 'CATEGORY',
+  timestamp: 'Mar-17-2023 22:12:38'
+}
+{
+  level: 'error',
+  message: 'Resource not found PUT undefined://localhost:5000/api/v1/branches/639ed2a238b2958274cde6b23',
+  service: 'user-service',
+  label: 'PUT',
+  timestamp: 'Mar-17-2023 22:15:02'
+}
+{
+  level: 'error',
+  message: 'Resource not found',
+  service: 'user-service',
+  timestamp: 'Mar-17-2023 22:16:50',
+  label: 'Resource not found PUT ://localhost:5000/api/v1/branches/639ed2a238b2958274cde6b23'
+}
+{
+  level: 'error',
+  message: 'Resource not found',
+  timestamp: 'Mar-17-2023 22:18:20',
+  label: 'Resource not found PUT ://localhost:5000/api/v1/branches/639ed2a238b2958274cde6b23'
+}
+{
+  level: 'error',
+  message: 'Resource not found',
+  timestamp: 'Mar-17-2023 22:20:09',
+  label: ' PUT ://localhost:5000/api/v1/branches/639ed2a238b2958274cde6b23'
+}
+{
+  level: 'error',
+  message: 'Invalid credentials',
+  timestamp: 'Mar-17-2023 22:21:59',
+  label: ' POST ://localhost:5000/api/v1/auth/login'
+}
+{
+  level: 'error',
+  message: 'Resource not found',
+  timestamp: 'Mar-17-2023 22:23:35',
+  label: ' PUT ://localhost:5000/api/v1/branches/639ed2a238b2958274cde6b23 : [object Object]'
+}
+{
+  level: 'error',
+  message: 'Resource not found',
+  timestamp: 'Mar-17-2023 22:25:13',
+  label: ' PUT ://localhost:5000/api/v1/branches/639ed2a238b2958274cde6b23 : {}'
+}
+{
+  level: 'error',
+  message: 'Invalid credentials',
+  timestamp: 'Mar-17-2023 22:25:25',
+  label: ' POST ://localhost:5000/api/v1/auth/login : {"email":"nattapong.share@gmail.com","password":"58599909"}'
+}

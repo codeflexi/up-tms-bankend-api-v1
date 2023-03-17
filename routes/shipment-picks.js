@@ -1,10 +1,12 @@
 const express = require('express');
 
-const { getShipmentPicks, 
-    getShipmentPick, 
-    updateShipmentPick, 
-    createShipmentPick, 
-    deleteShipmentPick } = require('../controllers/shipmentpicks');
+const { getShipmentPicks,
+  getShipmentPick,
+  getShipmentPickByUser,
+  updateShipmentPick,
+  createShipmentPick,
+  createPicked,
+  deleteShipmentPick } = require('../controllers/shipmentpicks');
 
 const ShipmentPick = require('../models/ShipmentPick');
 const Shipment = require('../models/Shipment');
@@ -12,7 +14,7 @@ const Shipment = require('../models/Shipment');
 const advancedResults = require('../middleware/advancedResults');
 
 // Include other resource routers
- //const shipmentRouter = require('./shipments');
+//const shipmentRouter = require('./shipments');
 // const reveiwRouter = require('./reviews');
 
 
@@ -23,34 +25,44 @@ const router = express.Router();
 // router.use('/:bootcampId/reviews',reveiwRouter);
 
 
-const { protect , authorize} = require('../middleware/auth');
+const { protect, authorize } = require('../middleware/auth');
 
 router
-.route('/')
-.get(
+  .route('/')
+  .get(
     advancedResults(ShipmentPick,
-        [ {
-      path: 'user',
-      select: 'name'
-    },
-    {
-      path: 'shipment_ids'
+      [{
+        path: 'user',
+        select: 'name'
       },
-      {path:'company'},
-      {path:'warehouse'},
-      {path:'vehicle'},
-      {path:'driver'}
-]
+      {
+        path: 'shipment_ids'
+      },
+      { path: 'company' },
+      { path: 'warehouse' },
+      { path: 'vehicle' },
+      { path: 'driver' }
+      ]
     ),
     getShipmentPicks
   )
-.post(protect ,authorize('publisher','admin'), createShipmentPick);
+  .post(protect, authorize('publisher', 'admin'), createShipmentPick);
 
 router
-.route('/:id')
-.get(
-  getShipmentPick)
-.put(protect,authorize('publisher','admin'),updateShipmentPick)
-.delete(protect,authorize('publisher','admin'),deleteShipmentPick);
+  .route('/:id')
+  .get(
+    getShipmentPick)
+  .put(protect, authorize('publisher', 'admin'), updateShipmentPick)
+  .delete(protect, authorize('publisher', 'admin'), deleteShipmentPick);
+
+router
+  .route('/driver/:userId')
+  .get(
+    getShipmentPickByUser)
+
+router
+  .route('/picked')
+  .post(
+    createPicked)
 
 module.exports = router;

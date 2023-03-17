@@ -4,7 +4,12 @@ const ShipmentSchema = mongoose.Schema({
     shipment_items: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'ShipmentItem',
-        required: true
+        required: false
+    }],
+    content_items: [{
+        type: String,
+        required: false
+    
     }],
     shipment_number: {
         type: String,
@@ -84,9 +89,11 @@ const ShipmentSchema = mongoose.Schema({
             'JD',
             'Line',
             'Facebook',
-            'Brand_Website'
+            'Brand_Website',
+            'Api',
+            'Upload'
         ],
-        default: 'Brand_Website'
+        default: 'Api'
     },
     cargo_info: {
         item_type: {

@@ -26,7 +26,7 @@ exports.getShipment = asyncHandler(async (req, res, next) => {
         path: 'shipment_items',
         populate: { path: 'product', select: 'code name price' }
       })
-     
+
   if (!shipment) {
     return next(
       new ErrorResponse(`Shipment not fond with id of ${req.params.id}`, 404));
@@ -45,8 +45,8 @@ exports.getShipmentByIds = asyncHandler(async (req, res, next) => {
 
   var ids = req.params.id.split(',');
 
-  const shipment = await Shipment.find({_id: { $in: ids}})
-  .select('waybill_number company warehouse')
+  const shipment = await Shipment.find({ _id: { $in: ids } })
+    .select('waybill_number company warehouse')
 
   // const shipment = await Shipment.findById(req.params.id)
   //   .populate('user', 'name')
@@ -57,12 +57,12 @@ exports.getShipmentByIds = asyncHandler(async (req, res, next) => {
   //       path: 'shipment_items',
   //       populate: { path: 'product', select: 'code name price' }
   //     })
-     
+
   if (!shipment) {
     return next(
       new ErrorResponse(`Shipment not fond with id of ${req.params.id}`, 404));
   }
-  
+
   res
     .status(200)
     .json({ success: true, data: shipment });
@@ -72,11 +72,11 @@ exports.getShipmentByIds = asyncHandler(async (req, res, next) => {
 
 exports.getShipmentLogs = asyncHandler(async (req, res, next) => {
 
-  const shipmentlog = await ShipmentLog.find({shipment_id : req.params.id })
+  const shipmentlog = await ShipmentLog.find({ shipment_id: req.params.id })
     .populate('user', 'name')
     .populate('shipment_id')
-  
-     
+
+
   if (!shipmentlog) {
     return next(
       new ErrorResponse(`Shipment not fond with id of ${req.params.id}`, 404));
@@ -107,14 +107,13 @@ exports.createShipment = asyncHandler(async (req, res, next) => {
   const shipmentItemsIdsResolved = await shipmentItemsIds;
 
   const totalPrices = await Promise.all(shipmentItemsIdsResolved.map(async (shipmentItemId) => {
-
     const shipmentItem = await ShipmentItem.findById(shipmentItemId).populate('product', 'price');
     const totalPrice = shipmentItem.product.price * shipmentItem.quantity;
     return totalPrice
   }))
 
- const randomInit = `TH${Date.now()}${(Math.round(Math.random() * 1000))}`
- const totalPrice = totalPrices.reduce((a, b) => a + b, 0);
+  const randomInit = `TH${Date.now()}${(Math.round(Math.random() * 1000))}`
+  const totalPrice = totalPrices.reduce((a, b) => a + b, 0);
 
   // Add user to req.body
   req.body.user = req.user.id;
@@ -142,40 +141,34 @@ exports.createShipment = asyncHandler(async (req, res, next) => {
     );
   }
 
+  // Create New Shipment
+  const shipment = await Shipment.create(req.body);
 
- // Create New Shipment
-const shipment = await Shipment.create(req.body);
-
-//Create Log of New Shipments
-const randomLogInt = `LG${Date.now()}${(Math.round(Math.random() * 1000))}`
-const shipmentlog = {
-  user:req.user.id,
-  log_number:randomLogInt,
-  waybill_number:randomInit,
-  shipment_number:req.body.shipment_number,
-  event:"DATA SUBMITTED",
-  shipment_id:shipment._id,
-  ref_number:randomInit
-}
+  //Create Log of New Shipments
+  const randomLogInt = `LG${Date.now()}${(Math.round(Math.random() * 1000))}`
+  const shipmentlog = {
+    user: req.user.id,
+    log_number: randomLogInt,
+    waybill_number: randomInit,
+    shipment_number: shipment.shipment_number,
+    event: "DATA SUBMITTED",
+    shipment_id: shipment._id,
+    ref_number: randomInit
+  }
   const shipmentlogadd = await ShipmentLog.create(shipmentlog);
-  console.log(shipmentlogadd)
-  
-  
+  //console.log(shipmentlogadd)
+
   res.status(201).json({
     success: true,
     data: shipment
   });
-
- 
-//await Character.create([{ name: 'Will Riker' }, { name: 'Geordi LaForge' }]);
-  
-
+  //await Character.create([{ name: 'Will Riker' }, { name: 'Geordi LaForge' }]);
 });
 
 
 exports.createShipmentLog = asyncHandler(async (req, res, next) => {
 
- const randomInit = `LG${Date.now()}${(Math.round(Math.random() * 1000))}`
+  const randomInit = `LG${Date.now()}${(Math.round(Math.random() * 1000))}`
 
 
   // Add user to req.body
@@ -192,6 +185,22 @@ exports.createShipmentLog = asyncHandler(async (req, res, next) => {
   });
 });
 
+// @desc      Add Multiple Root
+// @route     POST /api/v1/bootcamps/:bootcampId/courses
+// @access    Private
+exports.uploadShipment = asyncHandler(async (req, res, next) => {
+  // Assign bootcampId to req.body for adding bootcampid 
+
+  // Create Course for that bootcamp
+  const shipment = await Shipment.insertMany(req.body);
+
+  res.status(200).json({
+      success: true,
+      count: shipment.length,
+      data: shipment
+  });
+});
+
 
 // @desc      Update shipment
 // @route     PUT /api/v1/shipments/:id
@@ -204,13 +213,33 @@ exports.updateShipment = asyncHandler(async (req, res, next) => {
       new ErrorResponse(`Shipment not found with id of ${req.params.id}`, 404)
     );
   }
+
+  if (req.body.status === 'ARRIVED HUB') {
   
+    //Create Log of New Shipments
+    const randomLogInt = `LG${Date.now()}${(Math.round(Math.random() * 1000))}`
+    const shipmentlog = {
+      user: req.user.id,
+      log_number: randomLogInt,
+      waybill_number: shipment.waybill_number,
+      shipment_number: shipment.shipment_number,
+      event: "ARRIVED HUB",
+      shipment_id: shipment._id,
+      ref_number: 'Receiving'
+    }
+    const shipmentlogadd = await ShipmentLog.create(shipmentlog);
+  }
+
   // Update shipment
+  if (!req.body.cargo_info.item_type) {
+    req.body.cargo_info.item_type = shipment.cargo_info.item_type
+  }
+  
   shipment = await Shipment.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
     runValidators: true
   });
- 
+
 
   res.status(200).json({ success: true, data: shipment });
 });
@@ -236,12 +265,12 @@ exports.deleteShipment = asyncHandler(async (req, res, next) => {
   //   );
   // }
 
-   // delete order items
-   await shipment.shipment_items.map(async shipmentitem => {
+  // delete order items
+  await shipment.shipment_items.map(async shipmentitem => {
     await ShipmentItem.findByIdAndRemove(shipmentitem)
-    
+
   })
-    await shipment.remove();
+  await shipment.remove();
 
   res.status(200).json({ success: true, data: {} });
 });

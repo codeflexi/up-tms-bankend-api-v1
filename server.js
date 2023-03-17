@@ -1,7 +1,9 @@
 const express = require('express');
 const dotenv = require('dotenv');
+const moment = require('moment-timezone')
 const fs = require('fs');
 const connectDB = require('./config/db');
+//const winston = require('winston');
 const logging = require('./config/logging');
 const colors = require('colors');
 const cookieParser = require('cookie-parser');
@@ -33,13 +35,11 @@ const cors = require('cors');
 // const Warehouse = require('./models/Warehouse');
 
 
-
 //Load ENV vars
 dotenv.config({path:'./config/config.env'});
 
 //Connect Database
 connectDB();
-
 
 const app = express();
 
@@ -68,64 +68,58 @@ app.use(cookieParser());
 if(process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 
-// var accessLogStream = fs.createWriteStream(`${__dirname}/_logfile/access.log`, { flags: 'a' })
+var accessLogStream = fs.createWriteStream(`${__dirname}/_logfile/access.log`, { flags: 'a' })
 // var errorLogStream = fs.createWriteStream(`${__dirname}/_logfile/error.log`, { flags: 'a' })
 
-//   // เขียน Log ลงไฟล์ access.log
-//   morgan.token('type',function(req,res) {
-//     return req.headers['content-type']
-//     })
+  // เขียน Log ลงไฟล์ access.log
+  morgan.token('type',function(req,res) {
+    return req.headers['content-type']
+    })
 
-//     morgan.token('error',function(req,res) {
-//         return  res.error
-//         })
+    morgan.token('error',function(req,res) {
+        return  res.error
+        })
     
 
-// //morgan.token('error', (req, res) => `${req.error.message} - ${req.error.stack}`);
+//morgan.token('error', (req, res) => `${req.error.message} - ${req.error.stack}`);
 
-// const getCustomErrorMorganFormat = () => JSON.stringify({
-//   timestamp: ':date[iso]', 
-//   method: ':method',
-//     url: ':url',
-//     http_version: ':http-version',
-//     response_time: ':response-time ms',
-//     status: ':status',
-//     content_length: ':res[content-length]',
-    
-//     headers_count: 'req-headers-length',
-//     error: ':error',
-// });
+morgan.token('date', (req, res, tz) => {
+  return moment().tz(tz).format('YYYY-MM-DD HH:mm:ss');
+  })
+  // morgan.format('myformat', :date[Asia/Taipei] | :method | :url | :response-time ms');
+      
+  // app.use(morgan('myformat'))
 
-// const getCustomLogMorganFormat = () => JSON.stringify({
-//   timestamp: ':date[iso]',
-//   method: ':method',
-//   url: ':url',
-//   http_version: ':http-version',
-//   response_time: ':response-time ms',
-//   status: ':status',
-//   content_length: ':res[content-length]',
-//   headers_count: 'req-headers-length',
-//   type: ':type',
-// });
+const getCustomLogMorganFormat = () => JSON.stringify({
+  status: ':status',
+  timestamp: ':date[Asia/Bangkok]',
+ // timestamp: moment(Date.now()).format("MMM D HH:mm") ,
+  method: ':method',
+  url: ':url',
+  http_version: ':http-version',
+  response_time: ':response-time ms',
+ 
+  // content_length: ':res[content-length]',
+  // headers_count: 'req-headers-length',
+  // type: ':type',
+});
 
 // app.use(morgan(getCustomErrorMorganFormat(), {
 //     skip: (req, res) => (res.statusCode < 400),
 //     stream: errorLogStream,
 // }));
 
-// // app.use(morgan('combined', {
-// // 	stream: accessLogStream,
-// // }));
+// app.use(morgan('combined', {
+// 	stream: accessLogStream,
+// }));
  
-  
 
-// // นำไปใช้โดยกำหนดผ่าน option: stream
-// // app.use(morgan('combined', { stream: accessLogStream }))
-// app.use(morgan(getCustomLogMorganFormat(), { stream: accessLogStream }))
+
+// นำไปใช้โดยกำหนดผ่าน option: stream
+// app.use(morgan('combined', { stream: accessLogStream }))
+app.use(morgan(getCustomLogMorganFormat(), { stream: accessLogStream }))
 
 }
-
-
 
 //app.use(logging)
 

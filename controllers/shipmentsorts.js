@@ -3,6 +3,7 @@ const ErrorResponse = require('../utils/errorResponse');
 const Shipment = require('../models/Shipment');
 
 const ShipmentSort = require('../models/ShipmentSort');
+const ShipmentLog = require('../models/ShipmentLog')
 
 // @desc      Get all Shipment
 // @route     GET /api/v1/Shipments
@@ -52,7 +53,7 @@ exports.createShipmentSort = asyncHandler(async (req, res, next) => {
 
   // Start Update Shipment Status
   //  Save shipment items
-  console.log("Update Shipment Status")
+  //console.log("Update Shipment Status")
   const shipmentItemsIds = Promise.all(req.body.shipment_ids.map(async (shipmentid) => {
     return shipmentid;
   }));
@@ -72,19 +73,33 @@ exports.createShipmentSort = asyncHandler(async (req, res, next) => {
     }
 
     const update = {
-      status: 'SORTED' 
+      status: 'SORTED'
     }
 
-      await Shipment.findByIdAndUpdate(shipmentItemId,update, {
-        new: true,
-        runValidators: true
-      });
-    
+    await Shipment.findByIdAndUpdate(shipmentItemId, update, {
+      new: true,
+      runValidators: true
+    });
+
+    //Create Log of New Shipments
+    const randomLogInt = `LG${Date.now()}${(Math.round(Math.random() * 1000))}`
+    const shipmentlog = {
+      user: req.user.id,
+      log_number: randomLogInt,
+      waybill_number: shipment.waybill_number,
+      shipment_number: shipment.shipment_number,
+      event: "SORTED",
+      shipment_id: shipment._id,
+      ref_number: randomInit
+    }
+    const shipmentlogadd = await ShipmentLog.create(shipmentlog);
+    //console.log(shipmentlogadd)
+
   }))
 
 
-   // Update shipment
-   const shipmentsort = await ShipmentSort.create(req.body);
+  // Update shipment
+  const shipmentsort = await ShipmentSort.create(req.body);
 
   // End Update Shipment Status
 

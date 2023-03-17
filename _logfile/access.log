@@ -2871,3 +2871,41 @@
 {"timestamp":"2023-01-19T11:46:37.923Z","method":"POST","url":"/api/v1/shipment-sorts","http_version":"1.1","response_time":"124.596 ms","status":"201","content_length":"427","headers_count":"req-headers-length","type":"application/json"}
 {"timestamp":"2023-01-19T11:46:38.130Z","method":"GET","url":"/api/v1/shipment-sorts?limit=12&page=1","http_version":"1.1","response_time":"110.603 ms","status":"200","content_length":"23676","headers_count":"req-headers-length","type":"-"}
 {"timestamp":"2023-01-19T11:46:44.553Z","method":"GET","url":"/api/v1/shipment-sorts/63c92d9dd04cb0a6e3b4c7fa","http_version":"1.1","response_time":"72.375 ms","status":"200","content_length":"1462","headers_count":"req-headers-length","type":"-"}
+{"timestamp":"2023-03-17T15:45:52.310Z","method":"POST","url":"/api/v1/auth/login","http_version":"1.1","response_time":"251.040 ms","status":"401","content_length":"63","headers_count":"req-headers-length","type":"application/json"}
+{"timestamp":"2023-03-17T15:45:57.670Z","method":"POST","url":"/api/v1/auth/login","http_version":"1.1","response_time":"231.927 ms","status":"200","content_length":"297","headers_count":"req-headers-length","type":"application/json"}
+{"timestamp":"2023-03-17T15:45:58.099Z","method":"GET","url":"/api/v1/shipments?limit=5&page=1","http_version":"1.1","response_time":"358.675 ms","status":"304","content_length":"-","headers_count":"req-headers-length","type":"-"}
+{"timestamp":"2023-03-17T15:47:53.221Z","method":"GET","url":"/api/v1/branches","http_version":"1.1","response_time":"197.671 ms","status":"200"}
+{"timestamp":"2023-03-17T15:47:53.291Z","method":"GET","url":"/api/v1/vehicles","http_version":"1.1","response_time":"254.313 ms","status":"200"}
+{"timestamp":"2023-03-17T15:47:53.387Z","method":"GET","url":"/api/v1/shipments?status=DATA%20SUBMITTED&limit=20&page=1","http_version":"1.1","response_time":"348.084 ms","status":"200"}
+{"timestamp":"2023-03-17T15:47:55.185Z","method":"GET","url":"/api/v1/shipments?limit=5&page=1","http_version":"1.1","response_time":"296.303 ms","status":"304"}
+{"timestamp":"2023-03-17T15:47:57.396Z","method":"GET","url":"/api/v1/shipment-sorts?limit=12&page=1","http_version":"1.1","response_time":"298.093 ms","status":"200"}
+{"timestamp":"2023-03-17T15:47:59.087Z","method":"GET","url":"/api/v1/shipment-sorts/63fdec5a17f3e39afc9e2b53","http_version":"1.1","response_time":"169.187 ms","status":"200"}
+{"status":"304","timestamp":"2023-03-17T15:58:43.511Z","method":"GET","url":"/api/v1/shipments?limit=5&page=1","http_version":"1.1","response_time":"370.554 ms"}
+{"status":"200","timestamp":"2023-03-17T15:58:45.918Z","method":"GET","url":"/api/v1/shipments/63ff25857539ab878eb5d964","http_version":"1.1","response_time":"86.292 ms"}
+{"status":"304","timestamp":"2023-03-17T15:58:46.008Z","method":"GET","url":"/api/v1/shipments/63ff25857539ab878eb5d964","http_version":"1.1","response_time":"85.185 ms"}
+{"status":"304","timestamp":"2023-03-17 23:11:03","method":"GET","url":"/api/v1/auth/logout","http_version":"1.1","response_time":"3.912 ms"}
+{"status":"304","timestamp":"2023-03-17 23:11:04","method":"GET","url":"/api/v1/shipments?limit=5&page=1","http_version":"1.1","response_time":"342.918 ms"}
+{"status":"200","timestamp":"2023-03-17 23:11:11","method":"POST","url":"/api/v1/auth/login","http_version":"1.1","response_time":"224.986 ms"}
+{"status":"304","timestamp":"2023-03-17 23:11:11","method":"GET","url":"/api/v1/shipments?limit=5&page=1","http_version":"1.1","response_time":"369.025 ms"}
+{"status":"304","timestamp":"2023-03-17 23:11:13","method":"GET","url":"/api/v1/shipments/63ff25857539ab878eb5d964","http_version":"1.1","response_time":"113.222 ms"}
+{"status":"304","timestamp":"2023-03-17 23:11:13","method":"GET","url":"/api/v1/shipments/63ff25857539ab878eb5d964","http_version":"1.1","response_time":"80.454 ms"}
+{"status":"304","timestamp":"2023-03-18 00:13:48","method":"GET","url":"/api/v1/shipments?limit=5&page=1","http_version":"1.1","response_time":"345.333 ms"}
+{"status":"304","timestamp":"2023-03-18 00:13:49","method":"GET","url":"/api/v1/shipments/63ff25857539ab878eb5d964","http_version":"1.1","response_time":"93.624 ms"}
+{"status":"304","timestamp":"2023-03-18 00:13:49","method":"GET","url":"/api/v1/shipments/63ff25857539ab878eb5d964","http_version":"1.1","response_time":"63.020 ms"}
+{"status":"304","timestamp":"2023-03-17 16:17:18","method":"GET","url":"/api/v1/shipments?limit=5&page=1","http_version":"1.1","response_time":"375.627 ms"}
+{"status":"304","timestamp":"2023-03-17 16:17:20","method":"GET","url":"/api/v1/shipments/63ff25857539ab878eb5d964","http_version":"1.1","response_time":"99.391 ms"}
+{"status":"304","timestamp":"2023-03-17 16:17:20","method":"GET","url":"/api/v1/shipments/63ff25857539ab878eb5d964","http_version":"1.1","response_time":"96.600 ms"}
+{"status":"304","timestamp":"2023-03-17 16:18:18","method":"GET","url":"/api/v1/shipment-sorts?limit=12&page=1","http_version":"1.1","response_time":"285.779 ms"}
+{"status":"304","timestamp":"2023-03-17 16:18:19","method":"GET","url":"/api/v1/shipments?limit=5&page=1","http_version":"1.1","response_time":"326.688 ms"}
+{"status":"304","timestamp":"2023-03-17 16:18:20","method":"GET","url":"/api/v1/shipments/63ff25857539ab878eb5d964","http_version":"1.1","response_time":"90.676 ms"}
+{"status":"304","timestamp":"2023-03-17 16:18:21","method":"GET","url":"/api/v1/shipments/63ff25857539ab878eb5d964","http_version":"1.1","response_time":"84.787 ms"}
+{"status":"304","timestamp":"2023-03-17 23:20:07","method":"GET","url":"/api/v1/shipments?limit=5&page=1","http_version":"1.1","response_time":"358.099 ms"}
+{"status":"304","timestamp":"2023-03-17 23:20:08","method":"GET","url":"/api/v1/shipments/63ff25857539ab878eb5d964","http_version":"1.1","response_time":"85.933 ms"}
+{"status":"304","timestamp":"2023-03-17 23:20:08","method":"GET","url":"/api/v1/shipments/63ff25857539ab878eb5d964","http_version":"1.1","response_time":"84.891 ms"}
+{"status":"304","timestamp":"2023-03-17 23:21:29","method":"GET","url":"/api/v1/shipments?limit=5&page=1","http_version":"1.1","response_time":"409.756 ms"}
+{"status":"304","timestamp":"2023-03-17 23:21:30","method":"GET","url":"/api/v1/branches","http_version":"1.1","response_time":"183.824 ms"}
+{"status":"304","timestamp":"2023-03-17 23:21:30","method":"GET","url":"/api/v1/vehicles","http_version":"1.1","response_time":"257.858 ms"}
+{"status":"304","timestamp":"2023-03-17 23:21:30","method":"GET","url":"/api/v1/shipments?status=DATA%20SUBMITTED&limit=20&page=1","http_version":"1.1","response_time":"296.398 ms"}
+{"status":"304","timestamp":"2023-03-17 23:21:31","method":"GET","url":"/api/v1/shipments?limit=5&page=1","http_version":"1.1","response_time":"337.061 ms"}
+{"status":"304","timestamp":"2023-03-17 23:21:32","method":"GET","url":"/api/v1/shipments/63ff25857539ab878eb5d964","http_version":"1.1","response_time":"101.948 ms"}
+{"status":"304","timestamp":"2023-03-17 23:21:32","method":"GET","url":"/api/v1/shipments/63ff25857539ab878eb5d964","http_version":"1.1","response_time":"76.842 ms"}

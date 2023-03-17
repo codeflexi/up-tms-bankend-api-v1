@@ -3,6 +3,7 @@ const {
   getRoutes,
   getRoute,
   addRoute,
+  addRouteMany,
   updateRoute,
   deleteRoute,
   getRouteMappings,
@@ -24,6 +25,11 @@ router
 .route('/')
 .get(advancedResults(Route),getRoutes)
 .post(protect, authorize('publisher', 'admin'), addRoute);
+
+router
+.route('/upload')
+.post(protect, authorize('publisher', 'admin'),   addRouteMany,
+);
 
 router
 .route('/mapping')
