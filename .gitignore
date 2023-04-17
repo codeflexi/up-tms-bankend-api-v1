@@ -1,2 +1,6 @@
 node_modules/
 config/config.env
+public/images
+public/images-dispatch
+public/images-pickup
+public/videos
