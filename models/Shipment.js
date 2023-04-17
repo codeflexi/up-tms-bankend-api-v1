@@ -75,7 +75,27 @@ const ShipmentSchema = mongoose.Schema({
         ],
         default: 'DATA SUBMITTED',
     },
-
+    is_by_pass: {
+        // Array of strings
+        type: String,
+        required: true,
+        enum: [
+            'Y',
+            'N'
+        ],
+        default: 'N'
+    },
+    driver: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+      },
+      vehicle: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Vehicle',
+    },
+    shipment_pick: {
+        type: String
+    },
     total_price: {
         type: Number,
     },
@@ -134,6 +154,36 @@ const ShipmentSchema = mongoose.Schema({
         },
         cod_amount: Number,
     },
+
+    picked_up_info: {
+        photo: {
+            // Array of strings
+            type: String
+        },
+        signature: {
+            // Array of strings
+            type: String
+        },
+        driver : {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User',
+        }
+    },
+    delivered_info: {
+        photo: {
+            // Array of strings
+            type: String
+        },
+        signature: {
+            // Array of strings
+            type: String
+        },
+        driver : {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User',
+        }
+    },
+  
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
@@ -146,18 +196,28 @@ const ShipmentSchema = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Warehouse',
     },
-    
-    date_shiped: {
-        type: Date,
-        default: Date.now,
-    },
     created_date: {
         type: Date,
         default: Date.now,
     },
+    picking_date: {
+        type: Date
+    },
+    picked_date: {
+        type: Date
+    },
+    outed_from_wh_date: {
+        type: Date
+    },
+    delivered_date: {
+        type: Date
+    },
     updated_date: {
-        type: Date,
-        default: Date.now,
+        type: Date
+    },
+    updated_by: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
     },
     createdAt: {
         type: Date,

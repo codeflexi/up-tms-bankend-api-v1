@@ -36,9 +36,15 @@ exports.getBootcamp = async (req, res, next) => {
 // @route   POST /api/v1/bootcamps
 // @access  Private
 exports.createBootcamp = async (req, res, next) => {
-
+  const url = 'http://' + req.get('host');
+  const baseurl = url + '/public/images/';
+ 
   // Add user to req.body
   req.body.user = req.user.id;
+  
+  if (req.file) {
+  req.body.image = baseurl + req.file.filename;
+  }
 
   // Check for published bootcamp
   const publishedBootcamp = await Bootcamp.findOne({ user: req.user.id });

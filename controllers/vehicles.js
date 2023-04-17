@@ -52,7 +52,7 @@ exports.addVehicle = asyncHandler(async (req, res, next) => {
 exports.updateVehicle = asyncHandler(async (req, res, next) => {
 
 
-    let vehicle = await Product.findById(req.params.id);
+    let vehicle = await Vehicle.findById(req.params.id);
 
     if (!vehicle) {
         return next(

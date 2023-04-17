@@ -108,8 +108,15 @@ exports.createShipmentPick = asyncHandler(async (req, res, next) => {
       );
     }
 
+    // Update Shipment Documents
     const update = {
-      status: 'PICKING UP' 
+      status: 'PICKING UP',
+      driver: req.body.driver,
+      vehicle : vehicle._id,
+      picking_date :  req.body.planned_date,
+      shipment_pick :  randomInit,
+      updated_by: req.body.user,
+      updated_date: Date.now()
     }
 
       await Shipment.findByIdAndUpdate(shipmentItemId,update, {

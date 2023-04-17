@@ -46,7 +46,7 @@ router
     ),
     getShipmentPicks
   )
-  .post(protect, authorize('publisher', 'admin'), createShipmentPick);
+  .post(protect, authorize('publisher', 'admin','user'), createShipmentPick);
 
 router
   .route('/:id')

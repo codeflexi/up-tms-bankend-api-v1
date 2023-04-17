@@ -8,7 +8,8 @@ const { getShipments,
   uploadShipment,
   createShipmentLog,
   deleteShipment,
-  getShipmentByIds
+  getShipmentByIds,
+  updatePickup
 } = require('../controllers/shipments');
 
 const Shipment = require('../models/Shipment');
@@ -20,6 +21,9 @@ const router = express.Router();
 
 const advancedResults = require('../middleware/advancedResults');
 const { protect, authorize } = require('../middleware/auth');
+const { validateFilePickupPhoto } = require('../middleware/validateFilePickupPhoto');
+const { validateFileSPickupSinature } = require('../middleware/validateFileSPickupSinature');
+
 
 // Re-route into other resource routers
 router.use('/:shipmentId/shipmentlogs', shipmentLogRouter);
@@ -40,6 +44,12 @@ router
         path: 'warehouse'
       },
       {
+        path: 'driver'
+      },
+      {
+        path: 'vehicle'
+      },
+      {
         path: 'shipment_items',
         populate: { path: 'product', select: 'name price' }
       }
@@ -56,6 +66,11 @@ router
   .post(protect, authorize('publisher', 'admin'), createShipmentLog);
 
 router
+  .route('/direct-pickup/:id')
+  .put(protect, authorize('publisher', 'admin','user'),validateFilePickupPhoto,validateFileSPickupSinature, updatePickup);
+
+
+router
   .route('/:id')
   .get(
     getShipment)
@@ -65,17 +80,18 @@ router
 router
   .route('/list/:id')
   .get(
-    getShipmentByIds)
-
+    getShipmentByIds);
 
 router
   .route('/logs/:id')
   .get(
-    getShipmentLogs)
+    getShipmentLogs);
 
-    router
-    .route('/upload')
-    .post(protect, authorize('publisher', 'admin'),   uploadShipment,
-    );
-    
+router
+  .route('/upload')
+  .post(protect, authorize('publisher', 'admin'), uploadShipment,
+  );
+
+
+
 module.exports = router;

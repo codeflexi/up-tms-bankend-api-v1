@@ -29,6 +29,7 @@ const shipmentRoutes = require('./routes/shipment-routes');
 const shipmentPicks = require('./routes/shipment-picks');
 const shipmentSorts = require('./routes/shipment-sorts');
 const shipmentLogs = require('./routes/shipment-logs');
+const posts = require('./routes/posts');
 
 const auth = require('./routes/auth');
 const cors = require('cors');
@@ -59,10 +60,15 @@ app.use(cors({
 
 
  //Body paser
-app.use(express.json());
+app.use(express.json({limit: '25mb'}));
+app.use(express.urlencoded({limit: '25mb'}));
 
 // Cookie parser
 app.use(cookieParser());
+
+// Set Static Path
+app.use('/public/images',express.static(__dirname + '/public/images'));
+app.use('/public/videos',express.static(__dirname + '/public/videos'));
 
 // Dev logging middleware
 if(process.env.NODE_ENV === 'development') {
@@ -143,6 +149,7 @@ app.use('/api/v1/shipment-picks',shipmentPicks);
 app.use('/api/v1/shipment-sorts',shipmentSorts);
 app.use('/api/v1/shipment-logs',shipmentLogs);
 app.use('/api/v1/route-masters',routes);
+app.use('/api/v1/posts',posts);
 app.use('/api/v1/auth',auth);
 
 app.use(errorHandler);

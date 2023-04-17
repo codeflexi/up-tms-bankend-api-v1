@@ -32,12 +32,12 @@ const errorHandler = (err, req, res, next) => {
   }
 
   // Log to winton
-  let ms = ` ${req.method} ://${req.get('host')}${req.originalUrl} : ${JSON.stringify(req.body)}` 
+  let ms = ` ${req.method} ://${req.get('host')}${req.originalUrl} : ${JSON.stringify(req.body)} :${JSON.stringify(req.headers)}` 
  const logger = createLogger({
   level: 'info',
   format: combine(
     timestamp({
-      format: "MMM-DD-YYYY HH:mm:ss",
+      format: "YYYY-MM-DD HH:mm:ss",
     }),
     label({ label: ms }),
     prettyPrint()

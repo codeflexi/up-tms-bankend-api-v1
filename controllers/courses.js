@@ -24,6 +24,7 @@ exports.getCourses = asyncHandler(async (req, res, next) => {
     }
 });
 
+
 // @desc      Get single course
 // @route     GET /api/v1/courses/:id
 // @access    Public
@@ -51,10 +52,10 @@ exports.getCourse = asyncHandler(async (req, res, next) => {
 // @access    Private
 exports.addCourse = asyncHandler(async (req, res, next) => {
     // Assign bootcampId to req.body for adding bootcampid 
-    
+   
     req.body.bootcamp = req.params.bootcampId;
     req.body.user = req.user.id;
-    
+   
 
     const bootcamp = await Bootcamp.findById(req.params.bootcampId);
 
