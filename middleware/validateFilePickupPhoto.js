@@ -6,6 +6,12 @@ const validateFilePickupPhoto = (req,res,next) => {
   let mimType = parts[0].split(':')[1];
   let imageData = parts[1].split(',')[1];
   var img = new Buffer.from(imageData, 'base64');
+  let folder = ''
+  if ( req.body.status  === 'DELIVERED') {
+    folder = 'public/images-dispatch/'
+  } else {
+    folder = 'public/images-pickup/'
+  }
 
   sharp(img)
  // .extract({ left: req.body.left, top: req.body.top, width: req.body.width, height: req.body.height })
@@ -13,7 +19,7 @@ const validateFilePickupPhoto = (req,res,next) => {
  // .resize(req.body.width,req.body.height)
   .jpeg({quality : 50})
   .toFile(
-    `public/images-pickup/${req.params.id}-photo.jpg`)
+    `${folder}${req.params.id}-photo.jpg`)
   .catch(error => {
     return next(
       new ErrorResponse(`No User with the if of ${req.params.id}`),

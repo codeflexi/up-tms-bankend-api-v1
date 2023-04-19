@@ -119,7 +119,6 @@ const ShipmentSchema = mongoose.Schema({
         item_type: {
             // Array of strings
             type: String,
-            required: true,
             enum: [
                 'Document',
                 'Dry food',

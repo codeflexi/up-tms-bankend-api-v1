@@ -6,10 +6,12 @@ const { getShipments,
   updateShipment,
   createShipment,
   uploadShipment,
+  uploadShipmentLog,
   createShipmentLog,
   deleteShipment,
   getShipmentByIds,
-  updatePickup
+  updatePickup,
+  updateDispatch
 } = require('../controllers/shipments');
 
 const Shipment = require('../models/Shipment');
@@ -69,6 +71,10 @@ router
   .route('/direct-pickup/:id')
   .put(protect, authorize('publisher', 'admin','user'),validateFilePickupPhoto,validateFileSPickupSinature, updatePickup);
 
+  router
+  .route('/dispatch/:id')
+  .put(protect, authorize('publisher', 'admin','user'),validateFilePickupPhoto,validateFileSPickupSinature, updateDispatch);
+
 
 router
   .route('/:id')
@@ -89,8 +95,14 @@ router
 
 router
   .route('/upload')
-  .post(protect, authorize('publisher', 'admin'), uploadShipment,
+  .post(protect, authorize('user','publisher', 'admin'), uploadShipment,
   );
+
+router
+  .route('/log-upload')
+  .post(protect, authorize('user','publisher', 'admin'), uploadShipmentLog,
+  );
+
 
 
 

@@ -4,6 +4,7 @@ const Shipment = require('../models/Shipment');
 const ShipmentLog = require('../models/ShipmentLog');
 const ShipmentItem = require('../models/ShipmentItem');
 const ShipmentPick = require('../models/ShipmentPick');
+const mongoose = require('mongoose');
 
 // @desc      Get all Shipment
 // @route     GET /api/v1/Shipments
@@ -102,7 +103,7 @@ exports.createShipment = asyncHandler(async (req, res, next) => {
     const shipmentItemsIds = Promise.all(req.body.shipment_items.map(async (shipmentItem) => {
       let newShipmentItem = new ShipmentItem({
         quantity: shipmentItem.quantity,
-        product: shipmentItem.product
+        product: mongoose.Types.ObjectId(shipmentItem.product)
       })
       newShipmentItem = await newShipmentItem.save();
       return newShipmentItem._id;
@@ -194,15 +195,33 @@ exports.createShipmentLog = asyncHandler(async (req, res, next) => {
 // @route     POST /api/v1/bootcamps/:bootcampId/courses
 // @access    Private
 exports.uploadShipment = asyncHandler(async (req, res, next) => {
-  // Assign bootcampId to req.body for adding bootcampid 
-
+ 
   // Create Course for that bootcamp
+  //req.body.user = req.user.id;
+  
   const shipment = await Shipment.insertMany(req.body);
 
   res.status(200).json({
     success: true,
     count: shipment.length,
     data: shipment
+  });
+});
+
+// @desc      Add Multiple Root
+// @route     POST /api/v1/bootcamps/:bootcampId/courses
+// @access    Private
+exports.uploadShipmentLog = asyncHandler(async (req, res, next) => {
+ 
+  // Create Course for that bootcamp
+  //req.body.user = req.user.id;
+ 
+  const shipmentlog = await ShipmentLog.insertMany(req.body);
+
+  res.status(200).json({
+    success: true,
+    count: shipmentlog.length,
+    data: shipmentlog
   });
 });
 
@@ -235,10 +254,10 @@ exports.updateShipment = asyncHandler(async (req, res, next) => {
     const shipmentlogadd = await ShipmentLog.create(shipmentlog);
   }
 
-  // Update shipment
-  if (!req.body.cargo_info.item_type) {
-    req.body.cargo_info.item_type = shipment.cargo_info.item_type
-  }
+  // // Update shipment
+  // if (!req.body.cargo_info.item_type) {
+  //   req.body.cargo_info.item_type = shipment.cargo_info.item_type
+  // }
 
   shipment = await Shipment.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
@@ -299,12 +318,13 @@ exports.updatePickup = asyncHandler(async (req, res, next) => {
     signature = shipment.picked_up_info.signature
   }
 
-  // 3.Update shipment
+  // 3.Update shipment 
+  //cont updateStatus = if ()
   shipmentUpdate = {
     picked_date: Date.now(),
     updated_date: Date.now(),
     updated_by: req.user.id,
-    status: 'PICKED UP',
+    status: 'OUT FOR DELIVERY',
     picked_up_info: {
       photo: photo,
       signature: signature,
@@ -320,6 +340,81 @@ exports.updatePickup = asyncHandler(async (req, res, next) => {
 
   res.status(200).json({ success: true, data: shipment });
 });
+
+
+// @desc      Update shipment Pickup
+// @route     PUT /api/v1/shipments/:id
+// @access    Public
+exports.updateDispatch= asyncHandler(async (req, res, next) => {
+  let shipment = await Shipment.findById(req.params.id);
+
+  req.body.user = req.user.id;
+
+  if (!shipment) {
+    return next(
+      new ErrorResponse(`Shipment not found with id of ${req.params.id}`, 404)
+    );
+  }
+
+  //1.Create Log of New Shipments
+  const randomLogInt = `LG${Date.now()}${(Math.round(Math.random() * 1000))}`
+  const shipmentlog = {
+    user: req.user.id,
+    log_number: randomLogInt,
+    waybill_number: shipment.waybill_number,
+    shipment_number: shipment.shipment_number,
+    event: 'DELIVERED',
+    shipment_id: shipment._id,
+    ref_number: 'Delivery'
+  }
+  await ShipmentLog.create(shipmentlog);
+
+  // // 2.Update Shipment Pick Status
+  // const filters = { pick_number: shipment.shipment_pick }
+  // const pickupdate = { status: 'COMPLETED' }
+  // const shipmentpick = await ShipmentPick.findOneAndUpdate(filters, pickupdate, {
+  //   new: true
+  // });
+
+
+  const url = process.env.PROTOCAL + req.get('host');
+  const baseurl = url + '/public/images-dispatch/';
+  var photo = ''
+  var signature = ''
+
+  if (req.body.photo && req.body.signature) {
+    photo = baseurl + `${req.params.id}-photo.jpg`;
+    signature = baseurl + `${req.params.idr}-signature.jpg`;
+
+  } else {
+    photo = shipment.picked_up_info.photo
+    signature = shipment.picked_up_info.signature
+  }
+
+  // 3.Update shipment 
+  //cont updateStatus = if ()
+  shipmentUpdate = {
+    delivered_date: Date.now(),
+    updated_date: Date.now(),
+    updated_by: req.user.id,
+    status: 'DELIVERED',
+    delivered_info: {
+      photo: photo,
+      signature: signature,
+      driver: req.user.id
+    }
+
+  }
+
+  shipment = await Shipment.findByIdAndUpdate(req.params.id, shipmentUpdate, {
+    new: true,
+    runValidators: true
+  });
+
+  res.status(200).json({ success: true, data: shipment });
+});
+
+
 
 
 // @desc      Delete shipment

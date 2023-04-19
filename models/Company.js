@@ -76,6 +76,10 @@ const CompanySchema = new mongoose.Schema(
       type: Boolean,
       default: false
     },
+    warehouse: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Warehouse',
+  },
     status: {
         type: String,
         required: true,
