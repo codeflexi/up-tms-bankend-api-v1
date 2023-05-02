@@ -11,7 +11,8 @@ const { getShipments,
   deleteShipment,
   getShipmentByIds,
   updatePickup,
-  updateDispatch
+  updateDispatch,
+  updateUnDispatch
 } = require('../controllers/shipments');
 
 const Shipment = require('../models/Shipment');
@@ -74,6 +75,10 @@ router
   router
   .route('/dispatch/:id')
   .put(protect, authorize('publisher', 'admin','user'),validateFilePickupPhoto,validateFileSPickupSinature, updateDispatch);
+
+  router
+  .route('/un-dispatch/:id')
+  .put(protect, authorize('publisher', 'admin','user'),updateUnDispatch);
 
 
 router

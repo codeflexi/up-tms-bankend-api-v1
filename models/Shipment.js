@@ -70,8 +70,10 @@ const ShipmentSchema = mongoose.Schema({
             'SORTED',
             'TRANSIT',
             'ARRIVED DC',
+            'DISPATCHING',
             'OUT FOR DELIVERY',
-            'DELIVERED'
+            'DELIVERED',
+            'UN DELIVERED'
         ],
         default: 'DATA SUBMITTED',
     },
@@ -94,6 +96,9 @@ const ShipmentSchema = mongoose.Schema({
         ref: 'Vehicle',
     },
     shipment_pick: {
+        type: String
+    },
+    shipment_dispatch: {
         type: String
     },
     total_price: {
@@ -152,6 +157,7 @@ const ShipmentSchema = mongoose.Schema({
             default: 'N'
         },
         cod_amount: Number,
+        isCodReceived: {Type: Boolean , default:false }
     },
 
     picked_up_info: {
@@ -168,6 +174,22 @@ const ShipmentSchema = mongoose.Schema({
             ref: 'User',
         }
     },
+
+    loaded_info: {
+        photo: {
+            // Array of strings
+            type: String
+        },
+        signature: {
+            // Array of strings
+            type: String
+        },
+        driver : {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User',
+        }
+    },
+
     delivered_info: {
         photo: {
             // Array of strings
@@ -203,6 +225,9 @@ const ShipmentSchema = mongoose.Schema({
         type: Date
     },
     picked_date: {
+        type: Date
+    },
+    dispatching_date: {
         type: Date
     },
     outed_from_wh_date: {

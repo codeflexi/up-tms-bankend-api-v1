@@ -311,7 +311,7 @@ exports.updatePickup = asyncHandler(async (req, res, next) => {
 
   if (req.body.photo && req.body.signature) {
     photo = baseurl + `${req.params.id}-photo.jpg`;
-    signature = baseurl + `${req.params.idr}-signature.jpg`;
+    signature = baseurl + `${req.params.id}-signature.jpg`;
 
   } else {
     photo = shipment.picked_up_info.photo
@@ -320,7 +320,7 @@ exports.updatePickup = asyncHandler(async (req, res, next) => {
 
   // 3.Update shipment 
   //cont updateStatus = if ()
-  shipmentUpdate = {
+  let shipmentUpdate = {
     picked_date: Date.now(),
     updated_date: Date.now(),
     updated_by: req.user.id,
@@ -384,11 +384,11 @@ exports.updateDispatch= asyncHandler(async (req, res, next) => {
 
   if (req.body.photo && req.body.signature) {
     photo = baseurl + `${req.params.id}-photo.jpg`;
-    signature = baseurl + `${req.params.idr}-signature.jpg`;
+    signature = baseurl + `${req.params.id}-signature.jpg`;
 
   } else {
-    photo = shipment.picked_up_info.photo
-    signature = shipment.picked_up_info.signature
+    photo = shipment.delivered_info.photo
+    signature = shipment.delivered_info.signature
   }
 
   // 3.Update shipment 
@@ -414,7 +414,56 @@ exports.updateDispatch= asyncHandler(async (req, res, next) => {
   res.status(200).json({ success: true, data: shipment });
 });
 
+// @desc      Update shipment Pickup
+// @route     PUT /api/v1/shipments/:id
+// @access    Public
+exports.updateUnDispatch= asyncHandler(async (req, res, next) => {
+  let shipment = await Shipment.findById(req.params.id);
 
+  req.body.user = req.user.id;
+
+  if (!shipment) {
+    return next(
+      new ErrorResponse(`Shipment not found with id of ${req.params.id}`, 404)
+    );
+  }
+
+  //1.Create Log of New Shipments
+  const randomLogInt = `LG${Date.now()}${(Math.round(Math.random() * 1000))}`
+  const shipmentlog = {
+    user: req.user.id,
+    log_number: randomLogInt,
+    waybill_number: shipment.waybill_number,
+    shipment_number: shipment.shipment_number,
+    event: 'UN DELIVERED',
+    shipment_id: shipment._id,
+    ref_number: req.body.reason
+  }
+  await ShipmentLog.create(shipmentlog);
+
+  // // 2.Update Shipment Pick Status
+  // const filters = { pick_number: shipment.shipment_pick }
+  // const pickupdate = { status: 'COMPLETED' }
+  // const shipmentpick = await ShipmentPick.findOneAndUpdate(filters, pickupdate, {
+  //   new: true
+  // });
+
+
+  // 3.Update shipment 
+  //cont updateStatus = if ()
+  shipmentUpdate = {
+    updated_date: Date.now(),
+    updated_by: req.user.id,
+    status: 'UN DELIVERED',
+  }
+
+  shipment = await Shipment.findByIdAndUpdate(req.params.id, shipmentUpdate, {
+    new: true,
+    runValidators: true
+  });
+
+  res.status(200).json({ success: true, data: shipment });
+});
 
 
 // @desc      Delete shipment

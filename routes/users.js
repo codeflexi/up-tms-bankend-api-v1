@@ -25,7 +25,7 @@ const upload = require('../middleware/multer');
 const  { validateFile } = require('../middleware/fileValidator');
 
 router.use(protect);
-router.use(authorize('user','admin'));
+router.use(authorize('user','admin','publisher'));
 
 router
   .route('/user-rec')
@@ -42,8 +42,6 @@ router
   .get(getUser)
   .put(protect,updateUser)
   .delete(protect,deleteUser);
-
-
 
 router
   .route('/upload-image/:id')

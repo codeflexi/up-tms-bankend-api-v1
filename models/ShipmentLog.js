@@ -33,8 +33,10 @@ const ShipmentLogSchema = mongoose.Schema({
             'SORTED',
             'TRANSIT',
             'ARRIVED DC',
+            'DISPATCHING',
             'OUT FOR DELIVERY',
-            'DELIVERED'
+            'DELIVERED',
+            'UN DELIVERED'
         ]
     },
     user: {

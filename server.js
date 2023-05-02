@@ -27,6 +27,7 @@ const orders = require('./routes/orders');
 const shipments = require('./routes/shipments');
 const shipmentRoutes = require('./routes/shipment-routes');
 const shipmentPicks = require('./routes/shipment-picks');
+const shipmentDispatchs = require('./routes/shipment-dispatchs');
 const shipmentSorts = require('./routes/shipment-sorts');
 const shipmentLogs = require('./routes/shipment-logs');
 const posts = require('./routes/posts');
@@ -69,6 +70,8 @@ app.use(cookieParser());
 // Set Static Path
 app.use('/public/images',express.static(__dirname + '/public/images'));
 app.use('/public/videos',express.static(__dirname + '/public/videos'));
+app.use('/public/images-dispatch',express.static(__dirname + '/public/images-dispatch'));
+app.use('/public/images-pickup',express.static(__dirname + '/public/images-pickup'));
 
 // Dev logging middleware
 if(process.env.NODE_ENV === 'development') {
@@ -146,6 +149,7 @@ app.use('/api/v1/orders',orders);
 app.use('/api/v1/shipments',shipments);
 app.use('/api/v1/shipment-routes',shipmentRoutes);
 app.use('/api/v1/shipment-picks',shipmentPicks);
+app.use('/api/v1/shipment-dispatchs',shipmentDispatchs);
 app.use('/api/v1/shipment-sorts',shipmentSorts);
 app.use('/api/v1/shipment-logs',shipmentLogs);
 app.use('/api/v1/route-masters',routes);

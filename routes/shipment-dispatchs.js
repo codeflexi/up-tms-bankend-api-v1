@@ -1,14 +1,14 @@
 const express = require('express');
 
-const { getShipmentPicks,
-  getShipmentPick,
-  getShipmentPickByUser,
+const { getShipmentDispatchs,
+  getShipmentDispatch,
+  getShipmentDispatchByUser,
   updateShipmentPick,
-  createShipmentPick,
-  createPicked,
-  deleteShipmentPick } = require('../controllers/shipmentpicks');
+  createShipmentDispatch,
+  createDispatch,
+  deleteShipmentPick } = require('../controllers/shipmentdispatchs');
 
-const ShipmentPick = require('../models/ShipmentPick');
+const ShipmentDispatch = require('../models/ShipmentDispatch');
 const Shipment = require('../models/Shipment');
 
 const advancedResults = require('../middleware/advancedResults');
@@ -33,7 +33,7 @@ const { protect, authorize } = require('../middleware/auth');
 router
   .route('/')
   .get(
-    advancedResults(ShipmentPick,
+    advancedResults(ShipmentDispatch,
       [{
         path: 'user',
         select: 'name'
@@ -47,24 +47,24 @@ router
       { path: 'driver' }
       ]
     ),
-    getShipmentPicks
+    getShipmentDispatchs
   )
-  .post(protect, authorize('publisher', 'admin','user'), createShipmentPick);
+  .post(protect, authorize('publisher', 'admin','user'), createShipmentDispatch);
 
 router
   .route('/:id')
   .get(
-    getShipmentPick)
+    getShipmentDispatch)
   .put(protect, authorize('publisher', 'admin'), updateShipmentPick)
   .delete(protect, authorize('publisher', 'admin'), deleteShipmentPick);
 
 router
   .route('/driver/:userId')
   .get(
-    getShipmentPickByUser)
+    getShipmentDispatchByUser)
 
 router
-  .route('/picked/:id')
-  .put(protect, authorize('publisher', 'admin','user'),validateFilePickupPhoto,validateFileSPickupSinature, createPicked);
+  .route('/loaded/:id')
+  .put(protect, authorize('publisher', 'admin','user'),validateFilePickupPhoto,validateFileSPickupSinature, createDispatch);
 
 module.exports = router;

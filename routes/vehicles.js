@@ -19,7 +19,7 @@ router
   .get(
     advancedResults(Vehicle, {
       path: 'driver',
-      select: '_id name'
+      select: '_id name last_name'
     }),
     getVehicles
   )
