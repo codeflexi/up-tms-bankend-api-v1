@@ -59,6 +59,8 @@ app.use(cors({
   "optionsSuccessStatus": 204
 }));
 
+//Access-Control-Allow-Origin: *
+
 
  //Body paser
 app.use(express.json({limit: '25mb'}));
@@ -96,7 +98,6 @@ morgan.token('date', (req, res, tz) => {
   return moment().tz(tz).format('YYYY-MM-DD HH:mm:ss');
   })
   // morgan.format('myformat', :date[Asia/Taipei] | :method | :url | :response-time ms');
-      
   // app.use(morgan('myformat'))
 
 const getCustomLogMorganFormat = () => JSON.stringify({
@@ -122,8 +123,6 @@ const getCustomLogMorganFormat = () => JSON.stringify({
 // 	stream: accessLogStream,
 // }));
  
-
-
 // นำไปใช้โดยกำหนดผ่าน option: stream
 // app.use(morgan('combined', { stream: accessLogStream }))
 app.use(morgan(getCustomLogMorganFormat(), { stream: accessLogStream }))

@@ -58,7 +58,7 @@ const errorHandler = (err, req, res, next) => {
 //
 
  
-if (process.env.NODE_ENV !== 'production') {
+if (process.env.NODE_ENV === 'production') {
  // logger.error(error.message, error);
  logger.log('error', error.message)
 }
