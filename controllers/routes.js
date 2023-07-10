@@ -17,7 +17,7 @@ exports.getRouteMappings = asyncHandler(async (req, res, next) => {
     res.status(200).json(res.advancedResults);
 });
 
-// @desc      Get single product
+// @desc      Get single product.c
 // @route     GET /api/v1/courses/:id
 // @access    Public
 exports.getRoute = asyncHandler(async (req, res, next) => {

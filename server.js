@@ -52,6 +52,11 @@ const app = express();
 //   origin: '*'
 // }));
 
+// let corsOptions = {
+//   origin : ['http://localhost:5500'],
+// }
+// app.use(cors(corsOptions))
+
 app.use(cors({
   "origin": "*",
   "methods": "GET,HEAD,PUT,PATCH,POST,DELETE",

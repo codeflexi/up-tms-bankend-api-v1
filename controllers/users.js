@@ -121,11 +121,13 @@ exports.updateUser = asyncHandler(async (req, res, next) => {
 
 
   if (req.body.image) {
-    const url = process.env.PROTOCAL + req.get('host');
+    //const url = process.env.PROTOCAL + req.get('host');
+    const url = process.env.BACKEND_URL;
   const baseurl = url + '/public/images/';
   const folder = '../public/images/';
 
   req.body.image = baseurl + `${req.params.id}.jpg`;
+  
   } else {
     req.body.image = user.image
   }

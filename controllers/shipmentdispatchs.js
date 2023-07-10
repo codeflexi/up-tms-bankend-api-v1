@@ -21,12 +21,18 @@ exports.getShipmentDispatchs = asyncHandler(async (req, res, next) => {
 exports.getShipmentDispatch = asyncHandler(async (req, res, next) => {
 
   const shipmentdispatch = await ShipmentDispatch.findById(req.params.id)
-    .populate('user', 'name')
-    .populate('shipment_ids')
-    .populate('company')
-    .populate('warehouse')
-    .populate('driver')
-    .populate('vehicle')
+  .populate('user', 'name')
+  .populate({
+    path:'shipment_ids',
+    populate:'company'
+  },
+  )
+
+  .populate('company')
+  .populate('warehouse')
+  .populate('driver')
+  .populate('vehicle')
+
 
 
   if (!shipmentdispatch) {
@@ -52,6 +58,7 @@ console.log(req.params.userId)
     .populate('warehouse')
     .populate('driver')
     .populate('vehicle')
+    .sort({planned_date:1})
 
 
   if (!shipmentdispatch) {
@@ -195,7 +202,8 @@ exports.createDispatch = asyncHandler(async (req, res, next) => {
 
 
 
-    const url = process.env.PROTOCAL + req.get('host');
+    //const url = process.env.PROTOCAL + req.get('host');
+    const url = process.env.BACKEND_URL;
     const baseurl = url + '/public/images-dispatch/';
     var photo = ''
     var signature = ''

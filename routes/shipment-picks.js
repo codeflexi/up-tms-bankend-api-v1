@@ -15,7 +15,6 @@ const advancedResults = require('../middleware/advancedResults');
 const { validateFilePickupPhoto } = require('../middleware/validateFilePickupPhoto');
 const { validateFileSPickupSinature } = require('../middleware/validateFileSPickupSinature');
 
-
 // Include other resource routers
 //const shipmentRouter = require('./shipments');
 // const reveiwRouter = require('./reviews');
@@ -66,5 +65,7 @@ router
 router
   .route('/picked/:id')
   .put(protect, authorize('publisher', 'admin','user'),validateFilePickupPhoto,validateFileSPickupSinature, createPicked);
+
+
 
 module.exports = router;

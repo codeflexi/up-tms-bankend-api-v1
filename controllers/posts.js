@@ -87,7 +87,8 @@ exports.createPost = asyncHandler(async (req, res, next) => {
   }
 
 
-  const url = process.env.PROTOCAL + req.get('host');
+  //const url = process.env.PROTOCAL + req.get('host');
+  const url = process.env.BACKEND_URL;
   const baseurl = url + '/public/videos/';
 
   if (req.file) {

@@ -22,6 +22,8 @@ const { protect, authorize } = require('../middleware/auth');
 
 // Create a multer instance with the storage engine
 const upload = require('../middleware/multer');
+const uploadImage = require('../middleware/multerImage');
+const uploadSignature = require('../middleware/multerSignature');
 const  { validateFile } = require('../middleware/fileValidator');
 
 router.use(protect);
@@ -46,6 +48,10 @@ router
 router
   .route('/upload-image/:id')
   .put(protect,upload.single('image'),validateFile,updateUser);
+
+  router
+  .route('/upload/:id')
+  .put(protect,uploadImage.single('image'),updateUser);
 
   router
   .route('/:id/follow')

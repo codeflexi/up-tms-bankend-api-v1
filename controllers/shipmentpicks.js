@@ -21,12 +21,23 @@ exports.getShipmentPick = asyncHandler(async (req, res, next) => {
 
   const shipmentpick = await ShipmentPick.findById(req.params.id)
     .populate('user', 'name')
-    .populate('shipment_ids')
+    .populate({
+      path:'shipment_ids',
+      populate:'company'
+    },
+    )
+   
+      // populate: {path :'company'},
+      // populate: {path :'warehouse'},
+      // // populate: {path :'driver'},
+      // // populate: {path :'vehicle'},
+    
     .populate('company')
     .populate('warehouse')
     .populate('driver')
     .populate('vehicle')
-   
+
+  
   
   if (!shipmentpick) {
     return next(
@@ -51,6 +62,7 @@ exports.getShipmentPickByUser = asyncHandler(async (req, res, next) => {
     .populate('warehouse')
     .populate('driver')
     .populate('vehicle')
+    .sort({planned_date:1})
    
   
   if (!shipmentpick) {
@@ -191,10 +203,15 @@ exports.createPicked = asyncHandler(async (req, res, next) => {
 
 
 
-  const url = process.env.PROTOCAL + req.get('host');
+  //const url = process.env.PROTOCAL + req.get('host');pro
+  
+
+  //const url = process.env.PROTOCAL + req.get('host');
+  const url = process.env.BACKEND_URL
   const baseurl = url + '/public/images-pickup/';
   var photo = ''
   var signature = ''
+  
 
   if (req.body.photo && req.body.signature) {
     photo = baseurl + `${req.params.id}-photo.jpg`;
@@ -303,3 +320,32 @@ exports.deleteShipmentPick= asyncHandler(async (req, res, next) => {
   await shipmentpick.remove();
   res.status(200).json({ success: true, data: {} });
 });
+
+
+// const patients = await Patient.find({})
+//                     .populate([{
+//                         path: 'files',
+//                         populate: {
+//                             path: 'authorizations',
+//                             model: 'Authorization'
+//                         },
+//                         populate: {
+//                             path: 'claims',
+//                             model: 'Claim',
+//                             options: {
+//                                 sort: { startDate: 1 }
+//                             }
+//                         }
+//                     }, {
+//                         path: 'policies',
+//                         model: 'Policy',
+//                         populate: {
+//                             path: 'vobs',
+//                             populate: [{
+//                                 path: 'benefits'
+//                             }, {
+//                                 path: 'eligibility', 
+//                                 model: 'Eligibility'
+//                             }]
+//                         }
+//                     }]);

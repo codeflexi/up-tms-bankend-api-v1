@@ -1,4 +1,6 @@
 const sharp = require('sharp');
+
+
 const validateFilePickupPhoto = (req,res,next) => {
     
   const base64Image = req.body.photo;
