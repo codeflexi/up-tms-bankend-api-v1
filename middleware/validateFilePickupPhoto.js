@@ -8,7 +8,9 @@ const validateFilePickupPhoto = (req,res,next) => {
   let mimType = parts[0].split(':')[1];
   let imageData = parts[1].split(',')[1];
   var img = new Buffer.from(imageData, 'base64');
+ 
   let folder = ''
+
   if ( req.body.status  === 'DELIVERED') {
     folder = 'public/images-dispatch/'
   } else {
@@ -29,7 +31,6 @@ const validateFilePickupPhoto = (req,res,next) => {
   );
   
   })
-
 
 next();
 }

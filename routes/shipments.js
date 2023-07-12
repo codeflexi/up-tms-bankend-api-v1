@@ -24,8 +24,13 @@ const router = express.Router();
 
 const advancedResults = require('../middleware/advancedResults');
 const { protect, authorize } = require('../middleware/auth');
-const { validateFilePickupPhoto } = require('../middleware/validateFilePickupPhoto');
-const { validateFileSPickupSinature } = require('../middleware/validateFileSPickupSinature');
+
+
+// const { validateFilePickupPhoto } = require('../middleware/validateFilePickupPhoto');
+// const { validateFileSPickupSinature } = require('../middleware/validateFileSPickupSinature');
+
+const { uploadS3PickupPhoto } = require('../middleware/uploadS3PickupPhoto');
+const { uploadS3PickupSignature } = require('../middleware/uploadS3PickupSignature');
 
 
 // Re-route into other resource routers
@@ -70,11 +75,11 @@ router
 
 router
   .route('/direct-pickup/:id')
-  .put(protect, authorize('publisher', 'admin','user'),validateFilePickupPhoto,validateFileSPickupSinature, updatePickup);
+  .put(protect, authorize('publisher', 'admin','user'),uploadS3PickupPhoto,uploadS3PickupSignature, updatePickup);
 
   router
   .route('/dispatch/:id')
-  .put(protect, authorize('publisher', 'admin','user'),validateFilePickupPhoto,validateFileSPickupSinature, updateDispatch);
+  .put(protect, authorize('publisher', 'admin','user'),uploadS3PickupPhoto,uploadS3PickupSignature, updateDispatch);
 
   router
   .route('/un-dispatch/:id')

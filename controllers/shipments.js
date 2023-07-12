@@ -303,10 +303,11 @@ exports.updatePickup = asyncHandler(async (req, res, next) => {
     new: true
   });
 
-
+  
   //const url = process.env.PROTOCAL + req.get('host');
   const url = process.env.BACKEND_URL;
-  const baseurl = url + '/public/images-pickup/';
+ // const baseurl = url + '/public/images-pickup/';
+ const baseurl = process.env.S3_BUCKET_URL_PICKUP
   var photo = ''
   var signature = ''
 
@@ -379,8 +380,9 @@ exports.updateDispatch= asyncHandler(async (req, res, next) => {
 
 
   //const url = process.env.PROTOCAL + req.get('host');
-  const url = process.env.BACKEND_URL;
-  const baseurl = url + '/public/images-dispatch/';
+ // const url = process.env.BACKEND_URL;
+ // const baseurl = url + '/public/images-dispatch/';
+ const baseurl = process.env.S3_BUCKET_URL_DISPATCH;
   var photo = ''
   var signature = ''
 

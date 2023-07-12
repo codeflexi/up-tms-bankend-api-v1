@@ -10,7 +10,9 @@ const {
   deleteUser,
   getRecUser,
   addFollow,
-  unFollow
+  unFollow,
+  uploadImage,
+  uploadUserImageMid
 } = require('../controllers/users');
 
 const User = require('../models/User');
@@ -18,13 +20,16 @@ const User = require('../models/User');
 const router = express.Router({ mergeParams: true });
 
 const advancedResults = require('../middleware/advancedResults');
+
+
 const { protect, authorize } = require('../middleware/auth');
 
 // Create a multer instance with the storage engine
 const upload = require('../middleware/multer');
-const uploadImage = require('../middleware/multerImage');
+const uploadMulterImage = require('../middleware/multerImage');
 const uploadSignature = require('../middleware/multerSignature');
 const  { validateFile } = require('../middleware/fileValidator');
+const { uploadS3PickupPhoto }= require('../middleware/uploadS3PickupPhoto');
 
 router.use(protect);
 router.use(authorize('user','admin','publisher'));
@@ -45,13 +50,18 @@ router
   .put(protect,updateUser)
   .delete(protect,deleteUser);
 
-router
+  router
   .route('/upload-image/:id')
   .put(protect,upload.single('image'),validateFile,updateUser);
 
+
+router
+  .route('/upload-image-s3/:id')
+  .put(protect,uploadS3PickupPhoto,uploadUserImageMid);
+
   router
   .route('/upload/:id')
-  .put(protect,uploadImage.single('image'),updateUser);
+  .put(protect,uploadMulterImage.single('image'),updateUser);
 
   router
   .route('/:id/follow')

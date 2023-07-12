@@ -12,8 +12,12 @@ const ShipmentPick = require('../models/ShipmentPick');
 const Shipment = require('../models/Shipment');
 
 const advancedResults = require('../middleware/advancedResults');
-const { validateFilePickupPhoto } = require('../middleware/validateFilePickupPhoto');
-const { validateFileSPickupSinature } = require('../middleware/validateFileSPickupSinature');
+
+// const { validateFilePickupPhoto } = require('../middleware/validateFilePickupPhoto');
+// const { validateFileSPickupSinature } = require('../middleware/validateFileSPickupSinature');
+
+ const { uploadS3PickupPhoto } = require('../middleware/uploadS3PickupPhoto');
+ const { uploadS3PickupSignature } = require('../middleware/uploadS3PickupSignature');
 
 // Include other resource routers
 //const shipmentRouter = require('./shipments');
@@ -64,7 +68,7 @@ router
 
 router
   .route('/picked/:id')
-  .put(protect, authorize('publisher', 'admin','user'),validateFilePickupPhoto,validateFileSPickupSinature, createPicked);
+  .put(protect, authorize('publisher', 'admin','user'),uploadS3PickupPhoto,uploadS3PickupSignature, createPicked);
 
 
 

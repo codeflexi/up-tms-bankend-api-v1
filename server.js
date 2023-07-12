@@ -68,6 +68,7 @@ app.use(cors({
 
 
  //Body paser
+//app.use(bodyParser.json());
 app.use(express.json({limit: '25mb'}));
 app.use(express.urlencoded({limit: '25mb'}));
 
@@ -163,7 +164,7 @@ app.use('/api/v1/auth',auth);
 app.use(errorHandler);
 
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 6000;
 
 const server = app.listen(PORT,
     console.log(`Server run in ${process.env.NODE_ENV} mode on port ${PORT}`.yellow.bold));

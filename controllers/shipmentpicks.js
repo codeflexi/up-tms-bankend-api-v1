@@ -205,10 +205,14 @@ exports.createPicked = asyncHandler(async (req, res, next) => {
 
   //const url = process.env.PROTOCAL + req.get('host');pro
   
+  //     S3_BUCKET_URL_PICKUP='https://up-tms-images-pickup.s3.ap-southeast-2.amazonaws.com/'
+// S3_BUCKET_URL_DISPATCH='https://up-tms-images-dispatch.s3.ap-southeast-2.amazonaws.com/'
+
 
   //const url = process.env.PROTOCAL + req.get('host');
-  const url = process.env.BACKEND_URL
-  const baseurl = url + '/public/images-pickup/';
+  const url = process.env.BACKEND_URL;
+  // const baseurl = url + '/public/images-pickup/';
+  const baseurl = process.env.S3_BUCKET_URL_PICKUP;
   var photo = ''
   var signature = ''
   
