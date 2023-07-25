@@ -87,3 +87,8 @@ CourseSchema.pre('remove', function () {
 });
 
 module.exports = mongoose.model('Course', CourseSchema);
+
+// const Genre = mongoose.model('Genre', genreSchema);
+// exports.genreSchema = genreSchema;
+// exports.Genre = Genre; 
+// exports.validate = validateGenre;

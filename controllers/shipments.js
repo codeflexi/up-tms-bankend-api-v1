@@ -198,7 +198,7 @@ exports.uploadShipment = asyncHandler(async (req, res, next) => {
  
   // Create Course for that bootcamp
   //req.body.user = req.user.id;
-  
+  console.log(req.body);
   const shipment = await Shipment.insertMany(req.body);
 
   res.status(200).json({

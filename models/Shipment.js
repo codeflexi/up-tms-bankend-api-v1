@@ -6,11 +6,24 @@ const ShipmentSchema = mongoose.Schema({
         ref: 'ShipmentItem',
         required: false
     }],
+
     content_items: [{
         type: String,
         required: false
     
     }],
+    order_items: [
+        {
+            sku: String,
+            product_name: String,
+            varaintion_name:String,
+            order_quantity: Number,
+            discount_amount:Number,
+            net_amount: Number,
+
+        }
+    ],
+
     shipment_number: {
         type: String,
         required: [true, 'Please add a shipment number'],
@@ -22,7 +35,9 @@ const ShipmentSchema = mongoose.Schema({
     waybill_number: {
         type: String
     },
-
+    upload_doc: {
+        type: String
+    },
     phone: {
         type: String,
         maxlength: [20, 'Phone number can not be longer than 20 characters']
@@ -281,6 +296,8 @@ ShipmentSchema.statics.getTrackingNumber = async function (shipmentId) {
 // });
 
 module.exports = mongoose.model('Shipment', ShipmentSchema);
+exports.ShipmentSchema = ShipmentSchema;
+
 
 
 
