@@ -22,7 +22,8 @@ exports.protect = asyncHandler(async (req, res, next) => {
 
   // Make sure token exists
   if (!token) {
-    return next(new ErrorResponse('Not authorized to access this route', 401));
+
+    return next(new ErrorResponse('Token not found ,Not authorized to access this route', 401));
   }
 
   try {
@@ -40,6 +41,7 @@ exports.protect = asyncHandler(async (req, res, next) => {
 // Grant access to specific roles
 exports.authorize = (...roles) => {
   return (req, res, next) => {
+    console.log(req.user?.role)
     if (!roles.includes(req.user?.role)) {
       return next(
         new ErrorResponse(
